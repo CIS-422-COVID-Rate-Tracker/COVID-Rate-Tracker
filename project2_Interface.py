@@ -107,7 +107,7 @@ class CISTInterface():
 	def _searchbox_callback(self, text):
 #		print(text)
 		if not text:
-			search.update(None)
+			self.search.update(None)
 			return
 		tmp = []
 		for i in self.namelist:

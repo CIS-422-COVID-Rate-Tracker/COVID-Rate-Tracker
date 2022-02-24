@@ -10,10 +10,11 @@ Required library: Tkinter
 '''
 import tkinter as tk
 from tkinter import *
+from search_box import SearchBox
 from tkinter import filedialog
 
 # testing dataset here (you can delete after decide final version)
-test_case = [["Kai Xiong", 0, 0],["Rebecca Hu", 0, 0],["Xiang Hao", 0, 0],["Austin Mello", 0, 0]]	# [name, pos/neg, absent]
+test_case = [["Kai Xiong", 1, 0],["Rebecca Hu", 0, 0],["Xiang Hao", 1, 0],["Austin Mello", 0, 0], ["Nick Johnstone", 0, 0],["Jeager Jochimsen", 0, 0],["Haoran Zhang", 0, 0],["Geli Zhang", 0, 0],["Amy Reichhold", 0, 0],["Nick Onofrei", 0, 0],["Kalyn Koyanagi", 0, 0],["Kenny Nguyen", 0, 0],["Kelly Schombert", 0, 0]]	# [name, pos/neg, absent]
 current_percentage = 10
 std_line = 20
 
@@ -27,12 +28,20 @@ class CISTInterface():
 		
 		# loading the roster file
 		self.roster = test_case
+		self.namelist = []
+		self.totalnum = len(self.roster)
+		for i in range(self.totalnum):
+			self.namelist.append(self.roster[i][0])
+		self.positive_num = 0
+		for j in self.roster:
+			if j[1]!=0:
+				self.positive_num+=1
 		
 		# loading deadline
 		self.standard_line = std_line
 		
 		# loading the current 
-		self.current_positive_persentage = current_percentage
+		self.current_positive_persentage = round(self.positive_num/self.totalnum*100, 1)
 		
 		# Gets native screen resolution width and height + ...
 		self.screen_w = self._topBar.winfo_screenwidth()
@@ -55,16 +64,23 @@ class CISTInterface():
 			self.pertext = self.canvas.create_text(self.win_w-self.win_w/5, self.win_h/15, text=(str(self.current_positive_persentage) + '%'), fill="red", font=('Helvetica 30 bold'), anchor='w')
 		
 		# setup the input button and export button
-		self.canvas.create_text(self.win_w/20, self.win_h/5 + 150, text=("Input New Student Roster:"), font = ('Helvetica 20 bold'), anchor='w')
-		self.canvas.create_text(self.win_w/20, self.win_h/3 + 150, text=("Export Current LOG File:"), font = ('Helvetica 20 bold'), anchor='w')
+		self.canvas.create_text(self.win_w/20, self.win_h/1.4, text=("Input New Student Roster:"), font = ('Helvetica 20 bold'), anchor='w')
+		self.canvas.create_text(self.win_w/20, self.win_h/1.2, text=("Export Current LOG File:"), font = ('Helvetica 20 bold'), anchor='w')
 		
-		self.confirmButton = Button(self._topBar, text="Input", font = ('Helvetica 20 bold'), command = self._testaction)
-		self.confirmButton.pack()
-		self.confirmButton.place(x = self.win_w-self.win_w/4, y = self.win_h/5 + 140)
+		self.inputButton = Button(self._topBar, text="Input", font = ('Helvetica 20 bold'), command = self._testaction)
+		self.exportButton = Button(self._topBar, text="Export", font = ('Helvetica 20 bold'), command = self._testaction)
 		
-		self.rejectButton = Button(self._topBar, text="Export", font = ('Helvetica 20 bold'), command = self._testaction)
-		self.rejectButton.pack()
-		self.rejectButton.place(x = self.win_w-self.win_w/4, y = self.win_h/3 + 140)
+		self.inputButton.pack()
+		self.exportButton.pack()
+		
+		self.inputButton.place(x = self.win_w-self.win_w/4, y = self.win_h/1.5)
+		self.exportButton.place(x = self.win_w-self.win_w/4, y = self.win_h/1.25)
+		
+		# setup search box
+		self.canvas.create_text(self.win_w/15, self.win_h/4, text = "Search name", font = ('Helvetica 13 bold'), anchor='w')
+		self.search = SearchBox(self.canvas, callback = self._searchbox_callback)
+		self.search.pack()
+		self.search.place(x = self.win_w/4, y = self.win_h/5)
 		
 		# pack up the canvas (ready to show on)
 		self.canvas.pack()
@@ -76,8 +92,8 @@ class CISTInterface():
 			self.canvas.itemconfigure(self.pertext, text = str(self.current_positive_persentage) + '%', fill='red')
 	
 	def _testaction(self):
-		print("button activate!!!\n")
-		self.current_positive_persentage+=1
+#		print("button activate!!!\n")
+		self.current_positive_persentage+=3
 		self._updatePercentage()
 	
 	def _turnOnGUI(self):
@@ -86,10 +102,21 @@ class CISTInterface():
 	def _closeOffGUI(self):
 		self._topBar.destroy()
 		
+	# callback function for search box 
+	# credit: https://github.com/arcticfox1919/tkinter-tabview
+	def _searchbox_callback(self, text):
+#		print(text)
+		if not text:
+			search.update(None)
+			return
+		tmp = []
+		for i in self.namelist:
+			if i.startswith(text):
+				tmp.append(i)
+		self.search.update(tmp)
 		
 		
-		
-# Testing		
+# Testing
 if __name__ == "__main__":
 	main_window = CISTInterface()
 	main_window._turnOnGUI()

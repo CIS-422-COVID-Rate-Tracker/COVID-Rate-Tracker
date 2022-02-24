@@ -32,7 +32,7 @@ class CISTInterface():
 		self.standard_line = std_line
 		
 		# loading the current 
-		self.curr_pos_per = current_percentage
+		self.current_positive_persentage = current_percentage
 		
 		# Gets native screen resolution width and height + ...
 		self.screen_w = self._topBar.winfo_screenwidth()
@@ -49,10 +49,10 @@ class CISTInterface():
 		# setting current percentage part
 		self.canvas.create_text(self.win_w/20, self.win_h/15, text=("Current Covid positive percentage:"), font = ('Helvetica 20 bold'), anchor='w')
 		# according standard line to show the percentage with color
-		if (self.curr_pos_per < self.standard_line):
-			self.pertext = self.canvas.create_text(self.win_w-self.win_w/5, self.win_h/15, text=(str(self.curr_pos_per) + '%'), fill="green", font=('Helvetica 30 bold'), anchor='w')
+		if (self.current_positive_persentage < self.standard_line):
+			self.pertext = self.canvas.create_text(self.win_w-self.win_w/5, self.win_h/15, text=(str(self.current_positive_persentage) + '%'), fill="green", font=('Helvetica 30 bold'), anchor='w')
 		else:
-			self.pertext = self.canvas.create_text(self.win_w-self.win_w/5, self.win_h/15, text=(str(self.curr_pos_per) + '%'), fill="red", font=('Helvetica 30 bold'), anchor='w')
+			self.pertext = self.canvas.create_text(self.win_w-self.win_w/5, self.win_h/15, text=(str(self.current_positive_persentage) + '%'), fill="red", font=('Helvetica 30 bold'), anchor='w')
 		
 		# setup the input button and export button
 		self.canvas.create_text(self.win_w/20, self.win_h/5 + 150, text=("Input New Student Roster:"), font = ('Helvetica 20 bold'), anchor='w')
@@ -70,14 +70,14 @@ class CISTInterface():
 		self.canvas.pack()
 		
 	def _updatePercentage(self):
-		if(self.curr_pos_per < self.standard_line):
-			self.canvas.itemconfigure(self.pertext, text = str(self.curr_pos_per) + '%', fill='green')
+		if(self.current_positive_persentage < self.standard_line):
+			self.canvas.itemconfigure(self.pertext, text = str(self.current_positive_persentage) + '%', fill='green')
 		else:
-			self.canvas.itemconfigure(self.pertext, text = str(self.curr_pos_per) + '%', fill='red')
+			self.canvas.itemconfigure(self.pertext, text = str(self.current_positive_persentage) + '%', fill='red')
 	
 	def _testaction(self):
 		print("button activate!!!\n")
-		self.curr_pos_per+=1
+		self.current_positive_persentage+=1
 		self._updatePercentage()
 	
 	def _turnOnGUI(self):

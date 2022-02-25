@@ -2,19 +2,21 @@
 Graphic User Interface
 Project 2
 Created Date: 2/22/2022
-Author: Kai Xiong
+Author: Kai Xiong，Rebecca Hu
 
 Required library: Tkinter
 # How to install Tkinter: sudo apt-get install python3.7-tk
 
 '''
+
 import tkinter as tk
 from tkinter import *
 from search_box import SearchBox
 from tkinter import filedialog
 
 # testing dataset here (you can delete after decide final version)
-test_case = [["Kai Xiong", 1, 0],["Rebecca Hu", 0, 0],["Xiang Hao", 1, 0],["Austin Mello", 0, 0], ["Nick Johnstone", 0, 0],["Jeager Jochimsen", 0, 0],["Haoran Zhang", 0, 0],["Geli Zhang", 0, 0],["Amy Reichhold", 0, 0],["Nick Onofrei", 0, 0],["Kalyn Koyanagi", 0, 0],["Kenny Nguyen", 0, 0],["Kelly Schombert", 0, 0]]	# [name, pos/neg, absent]
+#test_case = [["Kai Xiong", 1, 0],["Rebecca Hu", 0, 0],["Xiang Hao", 1, 0],["Austin Mello", 0, 0], ["Nick Johnstone", 0, 0],["Jeager Jochimsen", 0, 0],["Haoran Zhang", 0, 0],["Geli Zhang", 0, 0],["Amy Reichhold", 0, 0],["Nick Onofrei", 0, 0],["Kalyn Koyanagi", 0, 0],["Kenny Nguyen", 0, 0],["Kelly Schombert", 0, 0]]	# [name, pos/neg, absent]
+test_case = {"Kai Xiong":[1, 0],"Rebecca Hu":[0, 0],"Xiang Hao":[1, 0],"Austin Mello":[0, 0], "Nick Johnstone":[0, 0],"Jeager Jochimsen":[ 0, 0],"Haoran Zhang":[ 0, 0],"Geli Zhang":[ 0, 0],"Amy Reichhold":[ 0, 0],"Nick Onofrei":[0, 0],"Kalyn Koyanagi":[0, 0],"Kenny Nguyen":[0, 0],"Kelly Schombert":[0, 0]}	# [name, pos/neg, absent]
 current_percentage = 10
 std_line = 20
 
@@ -30,11 +32,15 @@ class CISTInterface():
 		self.roster = test_case
 		self.namelist = []
 		self.totalnum = len(self.roster)
-		for i in range(self.totalnum):
-			self.namelist.append(self.roster[i][0])
+		self.count = 0
+#		for i in range(self.totalnum):
+#			self.namelist.append(self.roster[i][0])
+		for i in self.roster.keys():
+			self.namelist.append(i)
+		print(self.namelist)
 		self.positive_num = 0
 		for j in self.roster:
-			if j[1]!=0:
+			if self.roster[j][0]!=0:
 				self.positive_num+=1
 		
 		# loading deadline
@@ -81,6 +87,9 @@ class CISTInterface():
 		self.search = SearchBox(self.canvas, callback = self._searchbox_callback)
 		self.search.pack()
 		self.search.place(x = self.win_w/4, y = self.win_h/5)
+		self.returnButton = Button(self._topBar, text="Return", font = ('Helvetica 20 bold'), command = self.return_command)
+		self.returnButton.pack()
+		self.returnButton.place(x = self.win_w-self.win_w/4, y = self.win_h/5)
 		
 		# pack up the canvas (ready to show on)
 		self.canvas.pack()
@@ -114,6 +123,34 @@ class CISTInterface():
 			if i.startswith(text):
 				tmp.append(i)
 		self.search.update(tmp)
+	
+	def return_command(self):
+		name = self.search._return_name()
+		self.count += 1
+		print("return count",self.count)
+		print("name", name)
+		if self.count > 1:
+			self.canvas.delete("name_delete")
+			if name == None:
+				print("none")
+				self.canvas.delete("name_delete")
+				self.positiveButton.destroy()
+				self.negativeButton.destroy()
+				self.absentButton.destroy()
+		self.canvas.create_text(self.win_w/15, self.win_h/2, text = name, font = ('Helvetica 15 bold'), anchor='w', tags = "name_delete")
+		self.positiveButton = Button(self._topBar, text="Positive", font = ('Helvetica 15 bold'), command = self.return_command)
+		self.positiveButton.pack()
+		self.positiveButton.place(x = self.win_w/4, y = self.win_h/2.1)
+		self.negativeButton = Button(self._topBar, text="Negative", font = ('Helvetica 15 bold'), command = self.return_command)
+		self.negativeButton.pack()
+		self.negativeButton.place(x = self.win_w/2, y = self.win_h/2.1)
+		self.absentButton = Button(self._topBar, text="Absent", font = ('Helvetica 15 bold'), command = self.return_command)
+		self.absentButton.pack()
+		self.absentButton.place(x = self.win_w-self.win_w/4, y = self.win_h/2.1)
+		print(name, self.roster[name][0])
+		if self.roster[name][0] == 1:
+			print("should change color")
+			self.positiveButton.configure(highlightbackground='red')
 		
 		
 # Testing

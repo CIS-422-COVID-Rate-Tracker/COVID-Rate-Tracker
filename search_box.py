@@ -18,6 +18,7 @@ class SearchBox(Entry):
         self.master = master
         self.list_var = StringVar()
         self.prev_text = ""
+        self.cur_cur_item = ""
 
     def _callback(self, *_):
         current_text = self.str_var.get()
@@ -47,9 +48,16 @@ class SearchBox(Entry):
 
     def _listbox_click(self, event):
         widget = event.widget
-        cur_item = widget.get(widget.curselection())
-        self.str_var.set(cur_item)
+        self.cur_item = widget.get(widget.curselection())
+        self.str_var.set(self.cur_item)
+        print("string", self.cur_item)
         self._hide()
+        
+    def _return_name(self):
+        print("box", self.cur_item)
+        return self.cur_item
+        
+    
 
     def _create_list(self):
         list_box = Listbox(self.window, selectmode=tk.SINGLE, listvariable=self.list_var, height=self.lines)

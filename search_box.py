@@ -7,64 +7,60 @@ from tkinter import StringVar
 
 class SearchBox(Entry):
 
-    def __init__(self, master=None, callback=None, lines=8, cnf={}, **kw):
-        super().__init__(master, cnf, **kw)
-        self.str_var = tk.StringVar()
-        self["textvariable"] = self.str_var
-        self.str_var.trace('w', self._callback)
-        self.window = None
-        self.lines = lines
+    def __init__(self, master=None, callback=None, cnf={}):
+        super().__init__(master, cnf)
+        self.stringVariable = tk.StringVar()
+        self["textvariable"] = self.stringVariable
+        self.stringVariable.trace('w', self._callback)
+        self.searchWindow = None
         self.callback = callback
         self.master = master
-        self.list_var = StringVar()
-        self.prev_text = ""
-        self.cur_cur_item = ""
+        self.listVariable = StringVar()
+        self.prevText = ""
+        self.currentItem = ""
 
     def _callback(self, *_):
-        current_text = self.str_var.get()
-        if current_text != self.prev_text:
-            self.prev_text = current_text
+        current_text = self.stringVariable.get()
+        if current_text != self.prevText:
+            self.prevText = current_text
             self.callback(current_text)
 
     def update(self, item_list):
-        if item_list and self.window:
-            self.list_var.set(item_list)
-        elif not item_list and self.window:
+        if item_list and self.searchWindow:
+            self.listVariable.set(item_list)
+        elif not item_list and self.searchWindow:
             self._hide()
-        elif item_list and not self.window:
+        elif item_list and not self.searchWindow:
             self._show()
-            self.list_var.set(item_list)
+            self.listVariable.set(item_list)
 
     def _show(self):
-        self.window = Toplevel()
-        self.window.transient(self.master)
-        self.window.overrideredirect(True)
-        self.window.attributes("-topmost", 1)
-        self.window.attributes("-alpha", 0.9)
+        self.searchWindow = Toplevel()
+        self.searchWindow.transient(self.master)
+        self.searchWindow.overrideredirect(True)
+        self.searchWindow.attributes("-alpha", 0.9)
         x = self.winfo_rootx()
         y = self.winfo_rooty() + self.winfo_height() + 6
-        self.window.wm_geometry("%dx%d+%d+%d" % (190, 95, x, y))
+        self.searchWindow.wm_geometry("%dx%d+%d+%d" % (190, 95, x, y))
         self._create_list()
 
     def _listbox_click(self, event):
         widget = event.widget
-        self.cur_item = widget.get(widget.curselection())
-        self.str_var.set(self.cur_item)
-        print("string", self.cur_item)
+        self.currentItem = widget.get(widget.curselection())
+        self.stringVariable.set(self.currentItem)
+        print("string", self.currentItem)
         self._hide()
         
-    def _return_name(self):
-        print("box", self.cur_item)
-        return self.cur_item
-        
-    
+#   def _return_name(self):
+#       print("box", self.currentItem)
+#       return self.currentItem
 
     def _create_list(self):
-        list_box = Listbox(self.window, selectmode=tk.SINGLE, listvariable=self.list_var, height=self.lines)
+        list_box = Listbox(self.searchWindow, selectmode=tk.SINGLE, listvariable=self.listVariable)
         list_box.bind('<<ListboxSelect>>', self._listbox_click)
         list_box.pack(fill=tk.BOTH, expand=tk.YES)
 
     def _hide(self):
-        if self.window:
-            self.window.destroy()
-            self.window = None
+        if self.searchWindow:
+            self.searchWindow.destroy()
+            self.searchWindow = None

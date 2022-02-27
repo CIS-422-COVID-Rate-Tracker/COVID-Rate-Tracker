@@ -20,12 +20,11 @@ from tkinter import StringVar
 from tkinter import messagebox
 
 # testing dataset here (you can delete after decide final version)
-#test_case = [["Kai Xiong", 1, 0],["Rebecca Hu", 0, 0],["Xiang Hao", 1, 0],["Austin Mello", 0, 0], ["Nick Johnstone", 0, 0],["Jeager Jochimsen", 0, 0],["Haoran Zhang", 0, 0],["Geli Zhang", 0, 0],["Amy Reichhold", 0, 0],["Nick Onofrei", 0, 0],["Kalyn Koyanagi", 0, 0],["Kenny Nguyen", 0, 0],["Kelly Schombert", 0, 0]]	# [name, pos/neg, absent]
 test_case = {"Kai Xiong":[1, 1],"Rebecca Hu":[0, 0],"Xiang Hao":[1, 0],"Austin Mello":[0, 0], "Nick Johnstone":[0, 0],"Jeager Jochimsen":[0, 0],"Haoran Zhang":[0, 0],"Geli Zhang":[0, 0],"Amy Reichhold":[ 0, 0],"Nick Onofrei":[0, 0],"Kalyn Koyanagi":[0, 0],"Kenny Nguyen":[0, 0],"Kelly Schombert":[0, 0]}	# [name, pos/neg, absent,第一个标记时间]
 std_line = 20
 
 class CISTInterface():
-	def __init__(self, database = None):
+	def __init__(self, database = None, stdLine = 20):
 		if database == None:
 			print("Error: Failed to read data")
 			sys.exit()
@@ -44,16 +43,13 @@ class CISTInterface():
 		self.positive = 0
 		self.negative = 0
 		self.absent = 0
-#		for i in range(self.totalnum):
-#			self.namelist.append(self.database[i][0])
 		for i in self.database.keys():
 			self.namelist.append(i)
-#		print(self.namelist)
 		self.positive_num = 0
 		self.countPositiveNumber()
 		
 		# loading deadline
-		self.standard_line = std_line
+		self.standard_line = stdLine
 		
 		# loading the current 
 		self.current_positive_persentage = 0
@@ -133,7 +129,7 @@ class CISTInterface():
 	# credit: https://github.com/arcticfox1919/tkinter-tabview
 	def _searchbox_callback(self, text):
 		print("text", text)
-		if text == None:
+		if text == "":
 #			清空positive，negative按钮
 			self.canvas.delete("name_delete")
 			if self.positive == 1:
@@ -166,7 +162,6 @@ class CISTInterface():
 		name = self.searchCurrentName
 		check = False
 		self.count += 1
-		self.search._hide()
 #		print("return count",self.count)
 		print("name", name)
 		for i in self.database.keys():
@@ -219,7 +214,6 @@ class CISTInterface():
 # ------Positive & Negative Buttons---------------------------------------------------
 	def _updateColorButton(self, name):
 		if self.database[name][0] == 1:
-#			print("should change color")
 			self.positiveButton.configure(highlightbackground='red', fg='red')
 			self.negativeButton.configure(highlightbackground='white', fg='black')
 		else:
@@ -240,7 +234,6 @@ class CISTInterface():
 		
 	def absentAction(self):
 		self.database[self.searchCurrentName][1] += 1
-		self.absentButton.configure(highlightbackground='orange', fg='orange')
 		self.absentButton.destroy()
 		print(self.database)
 			
@@ -258,5 +251,6 @@ class CISTInterface():
 
 # Testing
 if __name__ == "__main__":
-	main_window = CISTInterface(test_case)
+	main_window = CISTInterface(test_case, std_line)
 	main_window._turnOnGUI()
+	

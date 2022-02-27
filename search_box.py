@@ -21,10 +21,8 @@ class SearchBox(Entry):
 
     def _callback(self, *_):
         current_text = self.stringVariable.get()
-#        print("current name",current_text)
         if current_text != self.prevText:
             self.prevText = current_text
-            print("c", current_text)
             self.callback(current_text)
 
     def update(self, item_list):
@@ -46,23 +44,21 @@ class SearchBox(Entry):
         self.searchWindow.wm_geometry("%dx%d+%d+%d" % (190, 95, x, y))
         self._create_list()
 
+    def _hide(self):
+        if self.searchWindow:
+            self.searchWindow.destroy()
+            self.searchWindow = None
+
     def _listbox_click(self, event):
         widget = event.widget
         self.currentItem = widget.get(widget.curselection())
         self.stringVariable.set(self.currentItem)
         print("string", self.currentItem)
         self._hide()
-        
-#   def _return_name(self):
-#       print("box", self.currentItem)
-#       return self.currentItem
 
     def _create_list(self):
-        list_box = Listbox(self.searchWindow, selectmode=tk.SINGLE, listvariable=self.listVariable)
-        list_box.bind('<<ListboxSelect>>', self._listbox_click)
-        list_box.pack(fill=tk.BOTH, expand=tk.YES)
+        listBox = Listbox(self.searchWindow, selectmode=tk.SINGLE, listvariable=self.listVariable)
+        listBox.bind('<<ListboxSelect>>', self._listbox_click)
+        listBox.pack(fill=tk.BOTH, expand=tk.YES)
 
-    def _hide(self):
-        if self.searchWindow:
-            self.searchWindow.destroy()
-            self.searchWindow = None
+    

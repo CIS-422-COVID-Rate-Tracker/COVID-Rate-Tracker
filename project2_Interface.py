@@ -9,14 +9,10 @@ Required library: Tkinter
 # How to install Tkinter: sudo apt-get install python3.7-tk
 
 '''
-import sys
 import tkinter as tk
 from tkinter import *
 from search_box import SearchBox
 from tkinter import filedialog
-from tkinter import Toplevel, Listbox
-from tkinter import Entry
-from tkinter import StringVar
 from tkinter import messagebox
 
 # testing dataset here (you can delete after decide final version)
@@ -25,10 +21,6 @@ std_line = 20
 
 class CISTInterface():
 	def __init__(self, database = None, stdLine = 20):
-		if database == None:
-			print("Error: Failed to read data")
-			sys.exit()
-		
 		# main GUI window
 		self._topBar = tk.Tk()
 		
@@ -36,7 +28,11 @@ class CISTInterface():
 		self._topBar.title("Covid Infection Rate Tracker")
 		
 		# loading the roster file
-		self.database = database
+		if database == None:
+			# when database is empty, give an example to execute UI
+			self.database = {"Empty": [0,0]}
+		else:
+			self.database = database
 		self.namelist = []
 		self.totalnum = len(self.database)
 		self.count = 0
@@ -77,8 +73,8 @@ class CISTInterface():
 		# setup the input button and export button
 		self.canvas.create_text(self.win_w/20, self.win_h/1.4, text=("Input New Student Roster:"), font = ('Helvetica 20 bold'), anchor='w')
 		self.canvas.create_text(self.win_w/20, self.win_h/1.2, text=("Export Current LOG File:"), font = ('Helvetica 20 bold'), anchor='w')
-		self.inputButton = Button(self._topBar, text="Input", font = ('Helvetica 20 bold'), command = self._testaction)
-		self.exportButton = Button(self._topBar, text="Export", font = ('Helvetica 20 bold'), command = self._testaction)
+		self.inputButton = Button(self._topBar, text="Input", font = ('Helvetica 20 bold'), command = self.getInputFile)
+		self.exportButton = Button(self._topBar, text="Export", font = ('Helvetica 20 bold'), command = self.getLOGFile)
 		self.inputButton.pack()
 		self.exportButton.pack()
 		self.inputButton.place(x = self.win_w-self.win_w/4, y = self.win_h/1.5)
@@ -98,7 +94,7 @@ class CISTInterface():
 		
 		# pack up the canvas (ready to show up)
 		self.canvas.pack()
-	
+		
 	
 	
 # ------Percentage Number Part--------------------------------------------------------
@@ -159,6 +155,9 @@ class CISTInterface():
 # -----Return Button Part-----------------------------------------------------------	
 #		warning：打错名字; absent
 	def return_command(self):
+		if 'Empty' in self.database.keys():
+			messagebox.showwarning(title = 'Warning', message = 'please input initial roster！')
+			return
 		name = self.searchCurrentName
 		check = False
 		self.count += 1
@@ -236,13 +235,27 @@ class CISTInterface():
 		self.database[self.searchCurrentName][1] += 1
 		self.absentButton.destroy()
 		print(self.database)
-			
-# ------Main Window Part------------------------------------------------------------
-	def _testaction(self):
-		# test function (removeable)
-		self.current_positive_persentage+=3
-		self._updatePercentage()
+
+# ------File Input Part-------------------------------------------------------------
+	def getInputFile(self):
+		rosterFile = filedialog.askopenfile(initialdir = "", title = "Please chose your roster file")
+		## here we should call file I/O function and get new database
+#		self.database = # function that reurn new database
+		## Then renew the other attributes
+#		self.namelist = []
+#		for i in self.database.keys():
+#			self.namelist.append(i)
+#		self.totalnum = len(self.database)
+#		self.countPositiveNumber()
+#		self.renewCurrentPercentage()
 		
+	def getLOGFile(self):
+		## here we need to send a signal to let File I/O prints LOG File with current database
+		# fileIO.printLOGFile(self.database)
+		print("LOG file generated")
+		
+	
+# ------Main Window Part------------------------------------------------------------
 	def _turnOnGUI(self):
 		self._topBar.mainloop()
 		
@@ -251,6 +264,6 @@ class CISTInterface():
 
 # Testing
 if __name__ == "__main__":
-	main_window = CISTInterface(test_case, std_line)
+	main_window = CISTInterface(test_case)
 	main_window._turnOnGUI()
 	

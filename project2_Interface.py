@@ -2,12 +2,14 @@
 Graphic User Interface
 Project 2
 Created Date: 2/22/2022
-Last Update Date: 2/25/2022
+Last Update Date: 2/28/2022
 Author: Kai Xiong，Rebecca Hu
 
 Required library: Tkinter
 # How to install Tkinter: sudo apt-get install python3.7-tk
 
+credit: cite the components to build the search box part:
+		https://github.com/arcticfox1919/tkinter-tabview
 '''
 import tkinter as tk
 from tkinter import *
@@ -22,10 +24,10 @@ std_line = 20
 class CISTInterface():
 	def __init__(self, database = None, stdLine = 20):
 		# main GUI window
-		self._topBar = tk.Tk()
+		self._mainWindow = tk.Tk()
 		
-		# main GUI window title
-		self._topBar.title("Covid Infection Rate Tracker")
+		# main GUI window title name
+		self._mainWindow.title("Covid Infection Rate Tracker")
 		
 		# loading the roster file
 		if database == None:
@@ -33,16 +35,20 @@ class CISTInterface():
 			self.database = {"Empty": [0,0]}
 		else:
 			self.database = database
+		# create a list with student full names
 		self.namelist = []
 		self.totalnum = len(self.database)
+		for i in self.database.keys():
+			self.namelist.append(i)
+		# count how many positive students
+		self.positive_num = 0
+		self.countPositiveNumber()
+		
+		# setup flags of positive/negative/absent buttons
 		self.count = 0
 		self.positive = 0
 		self.negative = 0
 		self.absent = 0
-		for i in self.database.keys():
-			self.namelist.append(i)
-		self.positive_num = 0
-		self.countPositiveNumber()
 		
 		# loading deadline
 		self.standard_line = stdLine
@@ -52,16 +58,16 @@ class CISTInterface():
 		self.renewCurrentPercentage()
 		
 		# Gets native screen resolution width and height + ...
-		self.screen_w = self._topBar.winfo_screenwidth()
-		self.screen_h = self._topBar.winfo_screenheight()
+		self.screen_w = self._mainWindow.winfo_screenwidth()
+		self.screen_h = self._mainWindow.winfo_screenheight()
 		self.win_w = self.screen_w / 3;
 		self.win_h = self.screen_h / 3;
 		
 		# Sets the self.window size to these dimensions
-		self._topBar.geometry("%dx%d+%d+%d" % (self.win_w, self.win_h, 0, 0))
+		self._mainWindow.geometry("%dx%d+%d+%d" % (self.win_w, self.win_h, 0, 0))
 		
 		# setup the canvas in GUI
-		self.canvas = Canvas(self._topBar, width = self.win_w, height = self.win_h)
+		self.canvas = Canvas(self._mainWindow, width = self.win_w, height = self.win_h)
 		
 		# setting current percentage part
 		self.canvas.create_text(self.win_w/20, self.win_h/15, text=("Current Covid positive percentage:"), font = ('Helvetica 20 bold'), anchor='w')
@@ -70,14 +76,16 @@ class CISTInterface():
 		self.pertext = ""
 		self._setPercentage()
 		
-		# setup the input button and export button
+		# setup the input button
 		self.canvas.create_text(self.win_w/20, self.win_h/1.4, text=("Input New Student Roster:"), font = ('Helvetica 20 bold'), anchor='w')
-		self.canvas.create_text(self.win_w/20, self.win_h/1.2, text=("Export Current LOG File:"), font = ('Helvetica 20 bold'), anchor='w')
-		self.inputButton = Button(self._topBar, text="Input", font = ('Helvetica 20 bold'), command = self.getInputFile)
-		self.exportButton = Button(self._topBar, text="Export", font = ('Helvetica 20 bold'), command = self.getLOGFile)
+		self.inputButton = Button(self._mainWindow, text="Input", font = ('Helvetica 20 bold'), command = self.getInputFile)
 		self.inputButton.pack()
-		self.exportButton.pack()
 		self.inputButton.place(x = self.win_w-self.win_w/4, y = self.win_h/1.5)
+		
+		# setup the export button
+		self.canvas.create_text(self.win_w/20, self.win_h/1.2, text=("Export Current LOG File:"), font = ('Helvetica 20 bold'), anchor='w')
+		self.exportButton = Button(self._mainWindow, text="Export", font = ('Helvetica 20 bold'), command = self.generateLOGFile)
+		self.exportButton.pack()
 		self.exportButton.place(x = self.win_w-self.win_w/4, y = self.win_h/1.25)
 		
 		# setup search box
@@ -88,16 +96,23 @@ class CISTInterface():
 		self.search.place(x = self.win_w/4, y = self.win_h/5)
 		
 		# setup return button
-		self.returnButton = Button(self._topBar, text="Return", font = ('Helvetica 20 bold'), command = self.return_command)
+		self.returnButton = Button(self._mainWindow, text="Return", font = ('Helvetica 20 bold'), command = self.return_command)
 		self.returnButton.pack()
-		self.returnButton.place(x = self.win_w-self.win_w/4, y = self.win_h/5)
+		self.returnButton.place(x = self.win_w-self.win_w/3, y = self.win_h/5)
+		
+		# setup return button
+		self.cleanButton = Button(self._mainWindow, text="Clean", font = ('Helvetica 20 bold'), command = self.clean_command)
+		self.cleanButton.pack()
+		self.cleanButton.place(x = self.win_w-self.win_w/6, y = self.win_h/5)
 		
 		# pack up the canvas (ready to show up)
 		self.canvas.pack()
 		
 	
-	
-# ------Percentage Number Part--------------------------------------------------------
+################################################################################
+# ------Percentage Number Part--------------------------------------------------
+################################################################################
+
 	def _setPercentage(self):
 		if (self.current_positive_persentage < self.standard_line):
 			self.pertext = self.canvas.create_text(self.win_w-self.win_w/5, self.win_h/15, text=(str(self.current_positive_persentage) + '%'), fill="green", font=('Helvetica 30 bold'), anchor='w')
@@ -119,8 +134,10 @@ class CISTInterface():
 				
 	def renewCurrentPercentage(self):
 		self.current_positive_persentage = round(self.positive_num/self.totalnum*100, 1)
-		
-# -----Search Box Part function-------------------------------------------------------
+
+################################################################################
+# -----Search Box Part function-------------------------------------------------
+################################################################################
 	# callback function for search box 
 	# credit: https://github.com/arcticfox1919/tkinter-tabview
 	def _searchbox_callback(self, text):
@@ -144,28 +161,34 @@ class CISTInterface():
 			if text == i:
 				self.search._hide()
 				self.searchCurrentName = text
-				print("sea",self.searchCurrentName)
+#				print("sea",self.searchCurrentName)
+				self.return_command()
 				self.search.update(None)
 				return
 			elif i.startswith(text):
 				tmp.append(i)
 		self.search.update(tmp)
 		
+################################################################################
+# -----Return Button Part-------------------------------------------------------		
+################################################################################
 
-# -----Return Button Part-----------------------------------------------------------	
-#		warning：打错名字; absent
 	def return_command(self):
+		# if empty database, ask for input new one
 		if 'Empty' in self.database.keys():
 			messagebox.showwarning(title = 'Warning', message = 'please input initial roster！')
 			return
+		
 		name = self.searchCurrentName
 		check = False
 		self.count += 1
 #		print("return count",self.count)
 		print("name", name)
+		
 		for i in self.database.keys():
 			if name == i:
 				check = True
+				
 		if check == False:
 			print("Warning")
 			print("pna", self.positive,self.negative, self.absent)
@@ -177,7 +200,8 @@ class CISTInterface():
 				self.negativeButton.destroy()
 			if self.absent == 1:
 				self.absentButton.destroy()
-			return 
+			return
+		
 		if self.count > 1:
 			self.canvas.delete("name_delete")
 			if name == None:
@@ -186,23 +210,24 @@ class CISTInterface():
 				self.positiveButton.destroy()
 				self.negativeButton.destroy()
 				self.absentButton.destroy()
+				
 		# selected name set upon buttons
 		self.canvas.create_text(self.win_w/15, self.win_h/2.5, text = name, font = ('Helvetica 20 bold'),fill="blue" ,anchor='w', tags = "name_delete")
 		
 		# positive button set up
-		self.positiveButton = Button(self._topBar, text="Positive", font = ('Helvetica 15 bold'), command = self.positiveAction)
+		self.positiveButton = Button(self._mainWindow, text="Positive", font = ('Helvetica 15 bold'), command = self.positiveAction)
 		self.positiveButton.pack()
 		self.positiveButton.place(x = self.win_w/4, y = self.win_h/2.1)
 		self.positive = 1
 		
 		# negative button set up
-		self.negativeButton = Button(self._topBar, text="Negative", font = ('Helvetica 15 bold'), command = self.negativeAction)
+		self.negativeButton = Button(self._mainWindow, text="Negative", font = ('Helvetica 15 bold'), command = self.negativeAction)
 		self.negativeButton.pack()
 		self.negativeButton.place(x = self.win_w/2, y = self.win_h/2.1)
 		self.negative = 1
 		
 		# absent button set up
-		self.absentButton = Button(self._topBar, text="Absent", font = ('Helvetica 15 bold'), command = self.absentAction)
+		self.absentButton = Button(self._mainWindow, text="Absent", font = ('Helvetica 15 bold'), command = self.absentAction)
 		self.absentButton.pack()
 		self.absentButton.place(x = self.win_w-self.win_w/4, y = self.win_h/2.1)
 		self.absent = 1
@@ -210,7 +235,18 @@ class CISTInterface():
 		print(name, self.database[name][0])
 		self._updateColorButton(name)
 		
-# ------Positive & Negative Buttons---------------------------------------------------
+################################################################################
+# ------Clean button part-------------------------------------------------------
+################################################################################
+
+	def clean_command(self):
+		self.search.delete(0, END)
+		self.searchCurrentName = None
+
+################################################################################
+# ------Positive & Negative Buttons---------------------------------------------
+################################################################################
+
 	def _updateColorButton(self, name):
 		if self.database[name][0] == 1:
 			self.positiveButton.configure(highlightbackground='red', fg='red')
@@ -236,7 +272,10 @@ class CISTInterface():
 		self.absentButton.destroy()
 		print(self.database)
 
-# ------File Input Part-------------------------------------------------------------
+################################################################################
+# ------File Input Part---------------------------------------------------------
+################################################################################
+
 	def getInputFile(self):
 		rosterFile = filedialog.askopenfile(initialdir = "", title = "Please chose your roster file")
 		## here we should call file I/O function and get new database
@@ -249,21 +288,24 @@ class CISTInterface():
 #		self.countPositiveNumber()
 #		self.renewCurrentPercentage()
 		
-	def getLOGFile(self):
+	def generateLOGFile(self):
 		## here we need to send a signal to let File I/O prints LOG File with current database
 		# fileIO.printLOGFile(self.database)
 		print("LOG file generated")
 		
-	
-# ------Main Window Part------------------------------------------------------------
+
+################################################################################
+# ------Main Window Part--------------------------------------------------------
+################################################################################
+
 	def _turnOnGUI(self):
-		self._topBar.mainloop()
+		self._mainWindow.mainloop()
 		
 	def _closeOffGUI(self):
-		self._topBar.destroy()
+		self._mainWindow.destroy()
 
 # Testing
 if __name__ == "__main__":
-	main_window = CISTInterface(test_case)
+	main_window = CISTInterface(test_case, std_line)
 	main_window._turnOnGUI()
 	

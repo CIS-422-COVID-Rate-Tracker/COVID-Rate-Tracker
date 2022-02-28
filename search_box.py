@@ -1,4 +1,22 @@
-# credit: https://github.com/arcticfox1919/tkinter-tabview
+"""
+Graphic User Interface
+Project 2
+Created Date: 2/25/2022
+modifier: Kai Xiong, Rebecca Hu
+
+Required library: Tkinter
+# How to install Tkinter: sudo apt-get install python3.7-tk
+
+credit: cite the components to build the search box part:
+        https://github.com/arcticfox1919/tkinter-tabview
+
+Used By:
+    interface.py
+
+Members:
+    Member name:        Type:       Default Val:        Description:
+    
+"""
 import tkinter as tk
 from tkinter import Toplevel, Listbox
 from tkinter import Entry

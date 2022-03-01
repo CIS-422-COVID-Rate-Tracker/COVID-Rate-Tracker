@@ -90,6 +90,7 @@ class CISTInterface():
 		
 		# setup search box
 		self.searchCurrentName = ""
+		self.searchPreviousName = ""
 		self.canvas.create_text(self.win_w/15, self.win_h/4, text = "Search name", font = ('Helvetica 13 bold'), anchor='w')
 		self.search = SearchBox(self.canvas, callback = self._searchbox_callback)
 		self.search.pack()
@@ -178,6 +179,8 @@ class CISTInterface():
 		if 'Empty' in self.database.keys():
 			messagebox.showwarning(title = 'Warning', message = 'please input initial roster！')
 			return
+		elif self.searchPreviousName == self.searchCurrentName:
+			return
 		
 		name = self.searchCurrentName
 		check = False
@@ -234,6 +237,7 @@ class CISTInterface():
 		
 		print(name, self.database[name][0])
 		self._updateColorButton(name)
+		self.searchPreviousName = self.searchCurrentName
 		
 ################################################################################
 # ------Clean button part-------------------------------------------------------

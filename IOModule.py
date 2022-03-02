@@ -2,17 +2,40 @@ import Student
 
 studentList = []
 
+
+
 def importNewData(filePath=""):
     #Check if the user provided a file path.  If not, defer to a hard-coded, default file.
     if filePath == "":
-        filePath = "./testRoster.txt"
+        print("File path not specified.  Using the test roster.")
+        filePath = "./test_roster.txt"
 
     #begin reading from the file
     with open(filePath, "r") as file:
         for i in file:
             #use python's split function to tokenize the values up by their tabs
             i = i.split("\t")
-            #create a new Student class and add the data.  I don't know if this
-            #will actually work yet, because python is an inferior language that
-            #doesn't declare its variable types upon declaration.
-            studentList.append(Student(i))
+
+            #Snip the newline character off the last entry:
+            i[1] = i[1].strip("\n")
+
+            studentList.append(Student.Student(i))
+            
+    # Create the list and return.
+    studentNames = makeNameList(studentList)
+
+    #print(studentNames)
+    return studentNames
+
+def makeNameList(classList):
+#Utility function to take a list of Student classes and return a list of corresponding names.
+    
+    returnList = []
+    for obj in studentList:
+        returnList.append(obj.name)
+
+    return returnList
+
+# Testing
+if __name__ == "__main__":
+    importNewData()

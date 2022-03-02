@@ -12,6 +12,7 @@ credit: cite the components to build the search box part:
 		https://github.com/arcticfox1919/tkinter-tabview
 '''
 import tkinter as tk
+import IOModule
 from tkinter import *
 from search_box import SearchBox
 from tkinter import filedialog
@@ -283,15 +284,23 @@ class CISTInterface():
 	def getInputFile(self):
 		rosterFile = filedialog.askopenfile(initialdir = "", title = "Please chose your roster file")
 		## here we should call file I/O function and get new database
-#		self.database = # function that reurn new database
+		newlist = IOModule.importNewData
+		self.namelist = []
+
+		for i in newlist:
+			self.namelist.append(i)
+
+		print(self.namelist)
 		## Then renew the other attributes
-#		self.namelist = []
-#		for i in self.database.keys():
-#			self.namelist.append(i)
-#		self.totalnum = len(self.database)
-#		self.countPositiveNumber()
-#		self.renewCurrentPercentage()
+		for i in self.namelist:
+			self.database[i] = "[0, 0]"
+
+		self.totalnum = len(self.database)
+		self.countPositiveNumber()
+		self.renewCurrentPercentage()
 		
+		#print(self.database)
+
 	def generateLOGFile(self):
 		## here we need to send a signal to let File I/O prints LOG File with current database
 		# fileIO.printLOGFile(self.database)

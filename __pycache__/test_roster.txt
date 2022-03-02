@@ -1,0 +1,28 @@
+Jaeger	Jochimsen	955821223	jaeger@juoregon.edu
+Mert	Yapucuoglu	951324569	merty@uoregon.edu
+Kai	Xiong	951234144	kxiong@uoregon.edu
+Nick	Johnstone	951444525	nsj@uoregon.edu
+Stephen	Levekis	951225435	slevecki@uoregon.edu
+Barack	Obama	951456789	obama@president.gov
+Aaron	Rodgers	951843256	rodgers@packers.com
+Daenerys	Targaryen	951838373	dt@uoregon.edu
+Bart	Simpson	951484234	bart@uoregon.edu
+Pam	Beesly	9514843234	pam@dundermiflin.gov
+Lebron	James	951646382	bron@lakers.edu
+Tom	Cruise	9513783123	tom@gmail.com	tom
+Ron	Swanson	9513838292	ron@gmail.ron
+Kamala	Harris	951472111	harris@vp.gov
+Myella	Primmer	951314567	myellap@uoregon.edu
+Emily	McDonald	951838174	emy@uoregon.edu
+Stephen	Curry	951784563	goat@warriors.edu	stef
+Enzo	Ferrari	951563134	ilikecars@ferrari.com
+Rory	Godekki	951563121	rodekki@google.net	Roe
+Hannah	Anderson	9516838123	ha@gmail.com
+Steve	Jobs	951533313	steve@apple.com
+Karen	Filappelli	951382313	karen@dundermiflin.com
+Alfredo	Lunki	951736458	fred@youtube.com
+Rafael	Subasa	951637894	raf@uoregon.edu
+Jordan	Peele	951738083	jordan@yahoo.com
+Lori	Greiner	951039488	lori@sharktank.com
+Giannis	Antetokounmpo	9514783244	giannis@bucks.com
+Dorothy	Gale	9516388439	dorothy@oz.gov

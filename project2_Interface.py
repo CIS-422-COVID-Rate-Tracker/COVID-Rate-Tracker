@@ -43,7 +43,6 @@ class CISTInterface():
 			self.namelist.append(i)
 		# count how many positive students
 		self.positive_num = 0
-		self.countPositiveNumber()
 		
 		# setup flags of positive/negative/absent buttons
 		self.count = 0
@@ -126,15 +125,15 @@ class CISTInterface():
 			self.canvas.itemconfigure(self.pertext, text = str(self.current_positive_persentage) + '%', fill='green')
 		else:
 			self.canvas.itemconfigure(self.pertext, text = str(self.current_positive_persentage) + '%', fill='red')
-			
-	def countPositiveNumber(self):
+	
+	"""
+	This function renew the positive students number and renew the percentage number
+	"""
+	def renewCurrentPercentage(self):
 		self.positive_num = 0
 		for j in self.database:
 			if self.database[j][0]!=0:
 				self.positive_num+=1
-		self.renewCurrentPercentage()
-				
-	def renewCurrentPercentage(self):
 		self.current_positive_persentage = round(self.positive_num/self.totalnum*100, 1)
 
 ################################################################################
@@ -263,13 +262,13 @@ class CISTInterface():
 	def positiveAction(self):
 		self.database[self.searchCurrentName][0] = 1
 		self._updateColorButton(self.searchCurrentName)
-		self.countPositiveNumber()
+		self.renewCurrentPercentage()
 		self._updatePercentage()
 		
 	def negativeAction(self):
 		self.database[self.searchCurrentName][0] = 0
 		self._updateColorButton(self.searchCurrentName)
-		self.countPositiveNumber()
+		self.renewCurrentPercentage()
 		self._updatePercentage()
 		
 	def absentAction(self):
@@ -296,7 +295,7 @@ class CISTInterface():
 			self.database[i] = "[0, 0]"
 
 		self.totalnum = len(self.database)
-		self.countPositiveNumber()
+		print(self.totalnum)
 		self.renewCurrentPercentage()
 		
 		#print(self.database)

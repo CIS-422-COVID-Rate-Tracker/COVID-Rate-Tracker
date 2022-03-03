@@ -83,6 +83,7 @@ def input_data():
             student[3] = int(student[3])
             student[4] = int(student[4])
             student[5] = int(student[5])
+#           student[6] = list(student[6])
             student_data[student[0]] = student
             
     student_file.close()

@@ -231,6 +231,10 @@ def days_for_isolation():
             # Code from https://www.geeksforgeeks.org/python-program-to-find-number-of-days-between-two-given-dates/
             days = numOfDays(date1, date2)
             students[key][5] = str(days)
+        if int(students[key][5]) >= 14:
+            students[key][3] = "0"
+            students[key][5] = "0"
+            students[key][6] = "0"
     
     # Save new data
     save_data(students)
@@ -258,6 +262,12 @@ Function to generate a daily log file about the information of the students to t
 def export_daily_log_file():
     # containing students' full name, 9-digit UO ID, Email address, sign for positive or negative, sign for absent or not, days has isolated, date added for testing positive, and date added for absent.
     date = str(datetime.now())
+    
+    path = "../COVID-Rate-Tracker/Log_Files"
+    
+    if not os.path.exists(path):
+        os.mkdir("Log_Files")
+    
     file = "../COVID-Rate-Tracker/Log_Files/Daily_log_file_" + date + ".txt"
     f = open(file, 'w+')
     title = "Full_Name      Email      Positive   Absent   Days_for_isolation\n"

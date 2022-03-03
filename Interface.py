@@ -282,7 +282,6 @@ class CISTInterface():
 		self._updateColorButton(self.searchCurrentName)
 		self.renewCurrentPercentage()
 		self._updatePercentage()
-		student_data.days_for_isolation()
 		self.database[self.searchCurrentName][6] = date.today().strftime("%m/%d/%Y")
 		student_data.save_data(self.database)
 	
@@ -295,7 +294,7 @@ class CISTInterface():
 		self._updateColorButton(self.searchCurrentName)
 		self.renewCurrentPercentage()
 		self._updatePercentage()
-		self.database[self.searchCurrentName][6] = 0
+		self.database[self.searchCurrentName][6] = "0/0/0"
 		student_data.save_data(self.database)
 	
 	"""

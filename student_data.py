@@ -271,8 +271,8 @@ def export_data():
                     time = str(info)
                 else:
                     string += str(info)
-                    # string += "\t"
-                f.write("{: >6}".string)
+                    string += "\t"
+                f.write(string)
     f.close()
 
 def main():

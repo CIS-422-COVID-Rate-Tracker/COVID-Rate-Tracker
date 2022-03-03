@@ -13,19 +13,11 @@ SearchBox credit: cite the components to build the search box part:
 '''
 import tkinter as tk
 import student_data
+from datetime import date
 from tkinter import *
 from search_box import SearchBox
 from tkinter import filedialog
 from tkinter import messagebox
-
-# testing dataset here (you can delete after decide final version)
-test_case = {"Kai Xiong":[1, 1],"Rebecca Hu":[0, 0],"Xiang Hao":[1, 0],"Austin Mello":[0, 0], "Nick Johnstone":[0, 0],"Jeager Jochimsen":[0, 0],"Haoran Zhang":[0, 0],"Geli Zhang":[0, 0],"Amy Reichhold":[ 0, 0],"Nick Onofrei":[0, 0],"Kalyn Koyanagi":[0, 0],"Kenny Nguyen":[0, 0],"Kelly Schombert":[0, 0]}	# [name, pos/neg, absent,第一个标记时间]
-
-student_data.input_data()
-test_case2 = student_data.student_data
-print(test_case2)
-# 第4个记录pos/neg, 第5个记录absent
-std_line = 20
 
 class CISTInterface():
 	def __init__(self, database = None, stdLine = 20):
@@ -67,8 +59,8 @@ class CISTInterface():
 		# Gets native screen resolution width and height + ...
 		self.screen_w = self._mainWindow.winfo_screenwidth()
 		self.screen_h = self._mainWindow.winfo_screenheight()
-		self.win_w = self.screen_w / 3;
-		self.win_h = self.screen_h / 3;
+		self.win_w = self.screen_w / 2.7;
+		self.win_h = self.screen_h / 2.7;
 		
 		# Sets the self.window size to these dimensions
 		self._mainWindow.geometry("%dx%d+%d+%d" % (self.win_w, self.win_h, 0, 0))
@@ -109,12 +101,12 @@ class CISTInterface():
 		# setup return button
 		self.returnButton = Button(self._mainWindow, text="Return", font = ('Helvetica 20 bold'), command = self.return_command)
 		self.returnButton.pack()
-		self.returnButton.place(x = self.win_w-self.win_w/3, y = self.win_h/5)
+		self.returnButton.place(x = self.win_w-self.win_w/2.6, y = self.win_h/5)
 		
 		# setup return button
 		self.cleanButton = Button(self._mainWindow, text="Clean", font = ('Helvetica 20 bold'), command = self.clean_command)
 		self.cleanButton.pack()
-		self.cleanButton.place(x = self.win_w-self.win_w/6, y = self.win_h/5)
+		self.cleanButton.place(x = self.win_w-self.win_w/5.5, y = self.win_h/5)
 		
 		# pack up the canvas (ready to show up)
 		self.canvas.pack()
@@ -289,6 +281,9 @@ class CISTInterface():
 		self._updateColorButton(self.searchCurrentName)
 		self.renewCurrentPercentage()
 		self._updatePercentage()
+		student_data.days_for_isolation()
+		self.database[self.searchCurrentName][6] = date.today().strftime("%m/%d/%Y")
+		student_data.save_data(self.database)
 	
 	"""
 	function active after click negative button. change student's status from poitive to 
@@ -299,14 +294,18 @@ class CISTInterface():
 		self._updateColorButton(self.searchCurrentName)
 		self.renewCurrentPercentage()
 		self._updatePercentage()
+		self.database[self.searchCurrentName][6] = 0
+		student_data.save_data(self.database)
 	
 	"""
 	function active after click absent button. Add times on the absent records and hide
 	the button. Hiding button because prevent clicking multiple times on absent button.
 	"""
 	def absentAction(self):
-		self.database[self.searchCurrentName][4] += 1
+		self.database[self.searchCurrentName][4] = 1
+		self.database[self.searchCurrentName][7] += 1
 		self.absentButton.destroy()
+		student_data.save_data(self.database)
 
 ################################################################################
 # ------File Input Part---------------------------------------------------------
@@ -317,24 +316,17 @@ class CISTInterface():
 	Then renew the current database (in UI).
 	"""
 	def getInputFile(self):
-		rosterFile = filedialog.askopenfile(initialdir = "", title = "Please chose your roster file")
+#		rosterFile = filedialog.askopenfile(initialdir = "", title = "Please chose your roster file")
 		## here we should call file I/O function and get new database
-		newlist = IOModule.importNewData
+		student_data.input_data()
+		
+		self.database = student_data.student_data
 		self.namelist = []
-
-		for i in newlist:
+		for i in self.database.keys():
 			self.namelist.append(i)
-
-		print(self.namelist)
-		## Then renew the other attributes
-		for i in self.namelist:
-			self.database[i] = "[0, 0]"
-
 		self.totalnum = len(self.database)
-		print(self.totalnum)
 		self.renewCurrentPercentage()
 		
-		#print(self.database)
 	
 	"""
 	generateLOGFile function will send a signal to let file io module to generate LOG
@@ -342,7 +334,8 @@ class CISTInterface():
 	"""
 	def generateLOGFile(self):
 		## here we need to send a signal to let File I/O prints LOG File with current database
-		# fileIO.printLOGFile(self.database)
+
+		student_data.export_data()
 		print("LOG file generated")
 		
 
@@ -364,6 +357,5 @@ class CISTInterface():
 
 # Testing
 if __name__ == "__main__":
-	main_window = CISTInterface(test_case2, std_line)
+	main_window = CISTInterface()
 	main_window._turnOnGUI()
-	

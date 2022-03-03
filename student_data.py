@@ -37,43 +37,56 @@ student_data = {}
 Function to allow user to import data
 This function is called when "input data" button is clicked
 """
-def input_data():
-    # Allows user to input text file
-    file = filedialog.askopenfilename(
-        title="Select a tab-delimited file with student data",
-        filetypes=[('textfiles', '*.txt')])
-    
-    # If cancel button
-    if not file: 
-        return
-
-    # Warning message for importing new data
-    warning_message = "Do you want to import "
-    warning_message += str(file)
-    warning_message += "?"
-
-    # Check if student data exists
-    if get_data():
-        warning_message = "The following student data will be overridden. Do you want to continue?\n\n"
-        current_students = get_data()
-        # List all current students being saved by system
-        for student, student_info in current_students.items():
-            warning_message += student_info[0]
-            warning_message += '\n'
-
-    # Override warning
-    confirm_override = messagebox.askyesno(
-        title="Warning", 
-        message=warning_message,
-        default=messagebox.YES)
-
-    # Cancel file input
-    if not confirm_override:
-        return
-
+def input_data(path = None):
+    # file input
+    if path == None:
+        # Allows user to input text file
+        file = filedialog.askopenfilename(
+            title="Select a tab-delimited file with student data",
+            filetypes=[('textfiles', '*.txt')])
+        
+        # If cancel button
+        if not file: 
+            return
+        
+#       # Warning message for importing new data
+#       warning_message = "Do you want to import "
+#       warning_message += str(file)
+#       warning_message += "?"
+        
+        # Check if student data exists
+        if get_data():
+            warning_message = "The following student data will be overridden. Do you want to continue?\n\n"
+            current_students = get_data()
+            # List all current students being saved by system
+            for student, student_info in current_students.items():
+                warning_message += student_info[0]
+                warning_message += '\n'
+                
+        # Override warning
+        confirm_override = messagebox.askyesno(
+            title="Warning", 
+            message=warning_message,
+            default=messagebox.YES)
+        
+        student_file = open(file, "r")
+        # File headers
+        headers = student_file.readline().strip().split('\t')
+        
+        # Populate dictionary with email as key
+        for student in student_file:
+            student = student.strip().split('\t')
+            student[3] = int(student[3])
+            student[4] = int(student[4])
+            student[5] = int(student[5])
+            student[7] = int(student[7])
+            student_data[student[0]] = student
+            
+        student_file.close()
+        
     # Reading file
     else:
-        student_file = open(file, "r")
+        student_file = open(path, "r")
         # File headers
         headers = student_file.readline().strip().split('\t')
 
@@ -83,10 +96,10 @@ def input_data():
             student[3] = int(student[3])
             student[4] = int(student[4])
             student[5] = int(student[5])
-#           student[6] = list(student[6])
+            student[7] = int(student[7])
             student_data[student[0]] = student
             
-    student_file.close()
+        student_file.close()
 
     save_data(student_data)
         
@@ -256,7 +269,7 @@ def export_data():
     # list of dates when student was called MM/DD/YY in order
 
     f = open("Student_Covid_Tracker.txt", 'w+')
-    title = "Full_Name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing_positive   Date_added_for_absence \n"
+    title = "Full_Name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing_positive   Times_for_absence \n"
 
     f.write(title)
     
@@ -277,7 +290,7 @@ def export_data():
     f.close()
 
 def main():
-    input_data()
+    input_data("Student_Covid_Tracker.txt")
 #   export_daily_log_file()
     print(student_data)
 

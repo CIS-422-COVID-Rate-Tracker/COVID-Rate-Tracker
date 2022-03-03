@@ -269,7 +269,7 @@ def export_data():
     # list of dates when student was called MM/DD/YY in order
 
     f = open("Student_Covid_Tracker.txt", 'w+')
-    title = "Full_Name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing_positive   Times_for_absence \n"
+    title = "Full_Name   UO_ID   Email   Positive/Negative   Absent/Not   Days_for_isolation   Date_added_for_testing_positive   Times_for_absence \n"
 
     f.write(title)
     
@@ -278,15 +278,12 @@ def export_data():
         time = ""
         print(data)
         for each in data:
+            string = ''
             for info in data[each]:
-                print("info",info)
-                string = ''
-                if isinstance(info, list):
-                    time = str(info)
-                else:
-                    string += str(info)
-                    string += "\t"
-                f.write(string)
+                string += str(info)
+                string += "\t"
+            string += "\n"
+            f.write(string)
     f.close()
 
 def main():

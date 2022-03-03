@@ -201,6 +201,13 @@ def get_data():
 
 
 """
+Function to calculate the difference of days between two given dates
+"""
+def numOfDays(date1, date2):
+    return (date2-date1).days
+
+
+"""
 Function to get how many days the student who has isolated
 """
 def days_for_isolation():
@@ -211,15 +218,15 @@ def days_for_isolation():
     today = date.today().strftime("%m/%d/%Y")
     today_list = today.split("/")
     print(today_list)
-    today_tuple = date(int(today_list[2]), int(today_list[0]), int(today_list[1]))
+    date2 = date(int(today_list[2]), int(today_list[0]), int(today_list[1]))
     
     # Loop through each student to track how many days they have isolated
     for key in students:
         if students[key][5] != 0:
             added_list = students[key][6].split("/")
-            added_tuple = date(int(added_list[2]), int(added_list[0]), int(added_list[1]))
+            date1 = date(int(added_list[2]), int(added_list[0]), int(added_list[1]))
             # Code from https://www.geeksforgeeks.org/python-program-to-find-number-of-days-between-two-given-dates/
-            days = (today_list - added_list).days
+            days = numOfDays(date1, date2)
             students[key][5] = str(days)
     
     # Save new data
@@ -240,6 +247,7 @@ def save_data(student_data):
     # Save to pickle file
     with open('student_data.pickle', 'wb') as handle:
         pickle.dump(student_data, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
 
 """
 Function to generate a daily log file about the information of the students to the user. And it can be used for the user to reload to continuously modify this file.

@@ -22,6 +22,7 @@ For export_data() function: it is used to export the file.
 
 Code cited from: https://www.geeksforgeeks.org/python-program-to-find-number-of-days-between-two-given-dates/
                 https://stackoverflow.com/questions/11218477/how-can-i-use-pickle-to-save-a-dict
+                https://www.programiz.com/python-programming/datetime/current-datetime
 """
 
 
@@ -30,12 +31,13 @@ from tkinter import filedialog, messagebox
 import pickle
 from datetime import date
 from datetime import datetime
+from pathlib import Path
 
 
 # Global student data dictionary
 student_data = {}
-
-
+    
+    
 """
 Function to allow user to import data
 This function is called when "input data" button is clicked
@@ -215,6 +217,7 @@ def days_for_isolation():
     students = get_data()
     
     # Get today's date
+    # code from: https://www.programiz.com/python-programming/datetime/current-datetime
     today = date.today().strftime("%m/%d/%Y")
     today_list = today.split("/")
     print(today_list)
@@ -255,7 +258,7 @@ Function to generate a daily log file about the information of the students to t
 def export_daily_log_file():
     # containing students' full name, 9-digit UO ID, Email address, sign for positive or negative, sign for absent or not, days has isolated, date added for testing positive, and date added for absent.
     date = str(datetime.now())
-    file = "Daily_log_file_" + date + ".txt"
+    file = "../COVID-Rate-Tracker/Log_Files/Daily_log_file_" + date + ".txt"
     f = open(file, 'w+')
     title = "Full_Name      Email      Positive   Absent   Days_for_isolation\n"
 
@@ -283,7 +286,7 @@ def export_daily_log_file():
                 string += "\n"
                 f.write(string)
     f.close()
-    
+
 
 """
 Function to generate a file about the information of the students to the user. This will be called when the user clicks on the "Export" button.

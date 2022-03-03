@@ -1,0 +1,10 @@
+First_Name   Last_Name   UO_ID   Email   Positive/Negative Absent/Not   Days_for_isolation   Date_added_for_testing_positive   Date_added_for_absence
+James	Butt	950000000	jbutt@uoregon.edu			0	[]   []
+Josephine	Darakjy	950000001	jdarakjy@uoregon.edu			0	[]   []
+Art	Venere	950000002	avenere@uoregon.edu			0	[]   []
+Lenna	Paprocki	950000003	lpaprocki@uoregon.edu			0	[]   []
+Donette	Foller	950000004	dfoller@uoregon.edu			0	[]   []
+Simona	Morasca	950000005	smorasca@uoregon.edu			0	[]   []
+Mitsue	Tollner	950000006	mtollner@uoregon.edu			0	[]   []
+Leota	Dilliard	950000007	ldilliard@uoregon.edu			0	[]   []
+Sage	Wieser	950000008	swieser@uoregon.edu			0	[]   []

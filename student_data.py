@@ -8,25 +8,36 @@ Authors:        Austin Mello
                 Rebecca Hu
                 Xiang Hao
 
-
+Descriptions: 
 This file consists of student data management and input and export file logic.
+
+For input_data() function: it is used to ask for a txt file that contains students information.
+For student_search() function: it is used to match the student whose name is searched in the search bar of UI interface.
+For student_absent() function: it is used to record student who is absent in class.
+For get_data() function: it is used to extract dictionary from student data pickle file.
+For days_for_isolation() function: it is used to calculate how many days the student has isolated.
+For save_data() function: it is used to save dictionary to pickle file.
+For export_daily_log_file() function: it is used to export the daily log file.
+For export_data() function: it is used to export the file.
+
 """
+
+
 
 import os
 from tkinter import filedialog, messagebox
 import pickle
 from datetime import date
 
+
 # Global student data dictionary
 student_data = {}
+
 
 """
 Function to allow user to import data
 This function is called when "input data" button is clicked
 """
-
-# 程序运行完之后 有一个文件来存目前的数据库数据
-
 def input_data():
     # Allows user to input text file
     file = filedialog.askopenfilename(
@@ -121,6 +132,7 @@ def student_search(email, status):
     # Save new data
     save_data(students)
 
+
 """
 Function to mark student who is absent in class, where the parameters are email and absent. Since email is unique, we use the email as the connected information.
 This function is called from project2_interface.py.
@@ -132,7 +144,6 @@ email: string
 absent: string
     String of type of absence
 """
-
 def student_absent(email, absent):
     # Get student dictionary
     students = get_data()
@@ -218,7 +229,7 @@ Function to generate a daily log file about the information of the students to t
 def export_daily_log_file():
     # containing students' full name, 9-digit UO ID, Email address, sign for positive or negative, sign for absent or not, days has isolated, date added for testing positive, and date added for absent.
     f = open("Daily_log_file.txt", 'w+')
-    title = "First_Name   Last_name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing positive   Date_added_for_absence \n"
+    title = "First_Name   Last_name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing_positive   Date_added_for_absence \n"
 
     f.write(title)
     
@@ -247,7 +258,7 @@ def export_data():
     # list of dates when student was called MM/DD/YY in order
 
     f = open("Student_Covid_Tracker.txt", 'w+')
-    title = "First_Name   Last_name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing positive   Date_added_for_absence \n"
+    title = "First_Name   Last_name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing_positive   Date_added_for_absence \n"
 #   "First Name	 Last Name	UO ID	Email	(Positive/Negative)  (absent)  (Days has isolated) (Date added for testing positive) (Date added for absent)\n"
     f.write(title)
     
@@ -268,6 +279,7 @@ def export_data():
     f.close()
 
 def main():
+    input_data()
     print(student_data)
 
 if __name__ == "__main__":

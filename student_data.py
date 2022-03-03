@@ -23,7 +23,6 @@ For export_data() function: it is used to export the file.
 """
 
 
-
 import os
 from tkinter import filedialog, messagebox
 import pickle
@@ -60,8 +59,6 @@ def input_data():
         # List all current students being saved by system
         for student, student_info in current_students.items():
             warning_message += student_info[0]
-            warning_message += ' '
-            warning_message += student_info[1]
             warning_message += '\n'
 
     # Override warning
@@ -83,91 +80,91 @@ def input_data():
         # Populate dictionary with email as key
         for student in student_file:
             student = student.strip().split('\t')
+            student[3] = ''
             student[4] = ''
-            student[5] = ''
-            student[6] = int(student[6])
-            student_data[student[3]] = student
+            student[5] = int(student[5])
+            student_data[student[0]] = student
             
     student_file.close()
 
     save_data(student_data)
         
 
-"""
-Function to match the student inputed in the search bar, where the parameters are email and status. Since email is unique, we use the email as the connected information.
-This function is called from project2_interface.py.
-
-Parameters
-_________
-email: string
-    String of unique student email
-status: string
-    String of type of status that was raised
-    "positive" or "negative"
-"""
-def student_search(email, status):
-    # Get student dictionary
-    students = get_data()
-    print(students)
-
-    # Find student data through email as key
-    student = students[email]
-
-    # Change the status of (negative or positive) by adding "x" or not
-    if status == "negative":
-        student[4] = ""
-    elif status == 'positive':
-        student[4] = "x"
-    else:
-        print("Status type must be 'negative' or 'positive'")
-        return
-    
-    # Track dates that student was called due to positive result in format MM/DD/YYY. Track days that student has isolated.
-    if status == "positive":
-        student[7].append(date.today().strftime("%m/%d/%Y"))
-        student[6] += 1
-
-    print("student called", student)
-
-    # Save new data
-    save_data(students)
-
-
-"""
-Function to mark student who is absent in class, where the parameters are email and absent. Since email is unique, we use the email as the connected information.
-This function is called from project2_interface.py.
-
-Parameters
-_________
-email: string
-    String of unique student email
-absent: string
-    String of type of absence
-"""
-def student_absent(email, absent):
-    # Get student dictionary
-    students = get_data()
-    
-    # Find student data through email as key
-    student = students[email]
-    
-    # Add an "x" sign to the absent part if the student is absent, and the user does not know whether this student tests positive or negative.
-    if absent == "absent" and student[5] == None and student[4] == None:
-        student[5] = "x"
-    elif absent == "absent" and student[5] != None and student[4] == None:
-        student[5] = ""
-    else:
-        print("Absent type must be 'absent' or 'present'")
-        return
-    
-    # Track dates that student was called due to absence in format MM/DD/YYY
-    if absent == "absent" and student[5] == None and student[4] == None:
-        student[7].append(date.today().strftime("%m/%d/%Y"))
-
-    print("student called", student)
-    
-    # Save new data
-    save_data(students)
+#"""
+#Function to match the student inputed in the search bar, where the parameters are email and status. Since email is unique, we use the email as the connected information.
+#This function is called from project2_interface.py.
+#
+#Parameters
+#_________
+#email: string
+#   String of unique student email
+#status: string
+#   String of type of status that was raised
+#   "positive" or "negative"
+#"""
+#def student_search(full_name, status):
+#   # Get student dictionary
+#   students = get_data()
+#   print(students)
+#
+#   # Find student data through email as key
+#   student = students[full_name]
+#
+#   # Change the status of (negative or positive) by adding "x" or not
+#   if status == "negative":
+#       student[3] = ""
+#   elif status == 'positive':
+#       student[3] = "x"
+#   else:
+#       print("Status type must be 'negative' or 'positive'")
+#       return
+#   
+#   # Track dates that student was called due to positive result in format MM/DD/YYY. Track days that student has isolated.
+#   if status == "positive":
+#       student[6].append(date.today().strftime("%m/%d/%Y"))
+#       student[5] += 1
+#
+#   print("student called", student)
+#
+#   # Save new data
+#   save_data(students)
+#
+#
+#"""
+#Function to mark student who is absent in class, where the parameters are email and absent. Since email is unique, we use the email as the connected information.
+#This function is called from project2_interface.py.
+#
+#Parameters
+#_________
+#email: string
+#   String of unique student email
+#absent: string
+#   String of type of absence
+#"""
+#def student_absent(full_name, absent):
+#   # Get student dictionary
+#   students = get_data()
+#   
+#   # Find student data through email as key
+#   student = students[full_name]
+#   
+#   # Add an "x" sign to the absent part if the student is absent, and the user does not know whether this student tests positive or negative.
+#   if absent == "absent" and student[4] == None and student[3] == None:
+#       student[4] = "x"
+#   elif absent == "absent" and student[4] != None and student[3] == None:
+#       student[4] = ""
+#   else:
+#       print("Absent type must be 'absent' or 'present'")
+#       return
+#   
+#   # Track dates that student was called due to absence in format MM/DD/YYY
+#   if absent == "absent" and student[4] == None and student[3] == None:
+#       student[6].append(date.today().strftime("%m/%d/%Y"))
+#
+#   print("student called", student)
+#   
+#   # Save new data
+#   save_data(students)
     
 
 """
@@ -198,10 +195,10 @@ def days_for_isolation():
     
     # Loop through each student to track how many days they have isolated
     for key in students:
-        if students[key][6] != 0:
+        if students[key][5] != 0:
             # Code from https://www.geeksforgeeks.org/python-program-to-find-number-of-days-between-two-given-dates/
-            days = (today - students[key][7]).days
-            students[key][7] = "days"
+            days = (today - students[key][6]).days
+            students[key][6] = "days"
     
     # Save new data
     save_data(students)
@@ -229,7 +226,7 @@ Function to generate a daily log file about the information of the students to t
 def export_daily_log_file():
     # containing students' full name, 9-digit UO ID, Email address, sign for positive or negative, sign for absent or not, days has isolated, date added for testing positive, and date added for absent.
     f = open("Daily_log_file.txt", 'w+')
-    title = "First_Name   Last_name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing_positive   Date_added_for_absence \n"
+    title = "Full_Name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing_positive   Date_added_for_absence \n"
 
     f.write(title)
     
@@ -245,8 +242,8 @@ def export_daily_log_file():
                     time = str(info)
                 else:
                     string += str(info)
-                    # string += "\t"
-                f.write("{: >6}".string)
+                    string += "\t"
+                f.write(string)
     f.close()
     
 
@@ -258,8 +255,8 @@ def export_data():
     # list of dates when student was called MM/DD/YY in order
 
     f = open("Student_Covid_Tracker.txt", 'w+')
-    title = "First_Name   Last_name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing_positive   Date_added_for_absence \n"
-#   "First Name	 Last Name	UO ID	Email	(Positive/Negative)  (absent)  (Days has isolated) (Date added for testing positive) (Date added for absent)\n"
+    title = "Full_Name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing_positive   Date_added_for_absence \n"
+
     f.write(title)
     
     with open('student_data.pickle', 'rb') as handle:
@@ -280,6 +277,7 @@ def export_data():
 
 def main():
     input_data()
+    export_daily_log_file()
     print(student_data)
 
 if __name__ == "__main__":

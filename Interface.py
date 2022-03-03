@@ -12,7 +12,7 @@ SearchBox credit: cite the components to build the search box part:
 		https://github.com/arcticfox1919/tkinter-tabview
 '''
 import tkinter as tk
-import IOModule
+import student_data
 from tkinter import *
 from search_box import SearchBox
 from tkinter import filedialog
@@ -20,6 +20,10 @@ from tkinter import messagebox
 
 # testing dataset here (you can delete after decide final version)
 test_case = {"Kai Xiong":[1, 1],"Rebecca Hu":[0, 0],"Xiang Hao":[1, 0],"Austin Mello":[0, 0], "Nick Johnstone":[0, 0],"Jeager Jochimsen":[0, 0],"Haoran Zhang":[0, 0],"Geli Zhang":[0, 0],"Amy Reichhold":[ 0, 0],"Nick Onofrei":[0, 0],"Kalyn Koyanagi":[0, 0],"Kenny Nguyen":[0, 0],"Kelly Schombert":[0, 0]}	# [name, pos/neg, absent,第一个标记时间]
+
+
+test_case2 = student_data.get_data()
+# 第4个记录pos/neg, 第5个记录absent
 std_line = 20
 
 class CISTInterface():
@@ -33,7 +37,7 @@ class CISTInterface():
 		# loading the roster file
 		if database == None:
 			# when database is empty, give an example to execute UI
-			self.database = {"Empty": [0,0]}
+			self.database = {"Empty": ['', '', '', 0, 0, 0, '[]   []']}
 		else:
 			self.database = database
 			
@@ -135,7 +139,7 @@ class CISTInterface():
 	def renewCurrentPercentage(self):
 		self.positive_num = 0
 		for j in self.database:
-			if self.database[j][0]!=0:
+			if self.database[j][4]!=0:
 				self.positive_num+=1
 		self.current_positive_persentage = round(self.positive_num/self.totalnum*100, 1)
 
@@ -266,7 +270,7 @@ class CISTInterface():
 	This function will change the button's color according the student positive/negative status
 	"""
 	def _updateColorButton(self, name):
-		if self.database[name][0] == 1:
+		if self.database[name][4] == 1:
 			# positive
 			self.positiveButton.configure(highlightbackground='red', fg='red')
 			self.negativeButton.configure(highlightbackground='white', fg='black')
@@ -280,7 +284,7 @@ class CISTInterface():
 	positive and renew button color.
 	"""
 	def positiveAction(self):
-		self.database[self.searchCurrentName][0] = 1
+		self.database[self.searchCurrentName][4] = 1
 		self._updateColorButton(self.searchCurrentName)
 		self.renewCurrentPercentage()
 		self._updatePercentage()
@@ -290,7 +294,7 @@ class CISTInterface():
 	negative and renew button color.
 	"""
 	def negativeAction(self):
-		self.database[self.searchCurrentName][0] = 0
+		self.database[self.searchCurrentName][4] = 0
 		self._updateColorButton(self.searchCurrentName)
 		self.renewCurrentPercentage()
 		self._updatePercentage()
@@ -300,7 +304,7 @@ class CISTInterface():
 	the button. Hiding button because prevent clicking multiple times on absent button.
 	"""
 	def absentAction(self):
-		self.database[self.searchCurrentName][1] += 1
+		self.database[self.searchCurrentName][5] += 1
 		self.absentButton.destroy()
 
 ################################################################################
@@ -359,6 +363,6 @@ class CISTInterface():
 
 # Testing
 if __name__ == "__main__":
-	main_window = CISTInterface(test_case, std_line)
+	main_window = CISTInterface(test_case2, std_line)
 	main_window._turnOnGUI()
 	

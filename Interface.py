@@ -278,6 +278,7 @@ class CISTInterface():
 	"""
 	def positiveAction(self):
 		self.database[self.searchCurrentName][3] = 1
+		self.database[self.searchCurrentName][5] = 1
 		self._updateColorButton(self.searchCurrentName)
 		self.renewCurrentPercentage()
 		self._updatePercentage()
@@ -326,6 +327,7 @@ class CISTInterface():
 			self.namelist.append(i)
 		self.totalnum = len(self.database)
 		self.renewCurrentPercentage()
+		self._updatePercentage()
 		
 	
 	"""
@@ -335,7 +337,7 @@ class CISTInterface():
 	def generateLOGFile(self):
 		## here we need to send a signal to let File I/O prints LOG File with current database
 
-		student_data.export_data()
+		student_data.export_daily_log_file()
 		print("LOG file generated")
 		
 
@@ -359,3 +361,4 @@ class CISTInterface():
 if __name__ == "__main__":
 	main_window = CISTInterface()
 	main_window._turnOnGUI()
+	

@@ -12,7 +12,7 @@ def main():
 			# loop for check isolate date and reset absent value
 			for i in students.keys():
 				students[i][4] = 0
-			print(students)
+			student_data.days_for_isolation()
 			
 				
 	except IOError:

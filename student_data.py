@@ -20,6 +20,8 @@ For save_data() function: it is used to save dictionary to pickle file.
 For export_daily_log_file() function: it is used to export the daily log file.
 For export_data() function: it is used to export the file.
 
+Code cited from: https://www.geeksforgeeks.org/python-program-to-find-number-of-days-between-two-given-dates/
+                https://stackoverflow.com/questions/11218477/how-can-i-use-pickle-to-save-a-dict
 """
 
 
@@ -27,6 +29,7 @@ import os
 from tkinter import filedialog, messagebox
 import pickle
 from datetime import date
+from datetime import datetime
 
 
 # Global student data dictionary
@@ -206,13 +209,18 @@ def days_for_isolation():
     
     # Get today's date
     today = date.today().strftime("%m/%d/%Y")
+    today_list = today.split("/")
+    print(today_list)
+    today_tuple = date(int(today_list[2]), int(today_list[0]), int(today_list[1]))
     
     # Loop through each student to track how many days they have isolated
     for key in students:
         if students[key][5] != 0:
+            added_list = students[key][6].split("/")
+            added_tuple = date(int(added_list[2]), int(added_list[0]), int(added_list[1]))
             # Code from https://www.geeksforgeeks.org/python-program-to-find-number-of-days-between-two-given-dates/
-            days = (today - students[key][6]).days
-            students[key][6] = "days"
+            days = (today_list - added_list).days
+            students[key][5] = str(days)
     
     # Save new data
     save_data(students)
@@ -233,32 +241,40 @@ def save_data(student_data):
     with open('student_data.pickle', 'wb') as handle:
         pickle.dump(student_data, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
+"""
+Function to generate a daily log file about the information of the students to the user. And it can be used for the user to reload to continuously modify this file.
+"""
+def export_daily_log_file():
+    # containing students' full name, 9-digit UO ID, Email address, sign for positive or negative, sign for absent or not, days has isolated, date added for testing positive, and date added for absent.
+    date = str(datetime.now())
+    file = "Daily_log_file_" + date + ".txt"
+    f = open(file, 'w+')
+    title = "Full_Name      Email      Positive   Absent   Days_for_isolation\n"
 
-#"""
-#Function to generate a daily log file about the information of the students to the user. And it can be used for the user to reload to continuously modify this file.
-#"""
-#def export_daily_log_file():
-#   # containing students' full name, 9-digit UO ID, Email address, sign for positive or negative, sign for absent or not, days has isolated, date added for testing positive, and date added for absent.
-#   f = open("Daily_log_file.txt", 'w+')
-#   title = "Full_Name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing_positive   Date_added_for_absence \n"
-#
-#   f.write(title)
-#   
-#   with open('student_data.pickle', 'rb') as handle:
-#       data = pickle.load(handle)
-#       time = ""
-#       print(data)
-#       for each in data:
-#           for info in data[each]:
-#               print("info",info)
-#               string = ''
-#               if isinstance(info, list):
-#                   time = str(info)
-#               else:
-#                   string += str(info)
-#                   string += "\t"
-#               f.write(string)
-#   f.close()
+    f.write(title)
+    
+    with open('student_data.pickle', 'rb') as handle:
+        data = pickle.load(handle)
+        
+        for each in data:
+            if data[each][3] == 1 or data[each][4] ==1:
+                if data[each][3] == 1:
+                    data[each][3] = "x"
+                if data[each][4] == 1:
+                    data[each][4] = "x"
+                string = ''
+                string += str(data[each][0])
+                string += "\t"
+                string += str(data[each][2])
+                string += "\t"
+                string += str(data[each][3])
+                string += "\t\t"
+                string += str(data[each][4])
+                string += "\t\t\t"
+                string += str(data[each][5])
+                string += "\n"
+                f.write(string)
+    f.close()
     
 
 """

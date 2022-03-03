@@ -80,8 +80,8 @@ def input_data():
         # Populate dictionary with email as key
         for student in student_file:
             student = student.strip().split('\t')
-            student[3] = ''
-            student[4] = ''
+            student[3] = int(student[3])
+            student[4] = int(student[4])
             student[5] = int(student[5])
             student_data[student[0]] = student
             
@@ -220,31 +220,31 @@ def save_data(student_data):
         pickle.dump(student_data, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
-"""
-Function to generate a daily log file about the information of the students to the user. And it can be used for the user to reload to continuously modify this file.
-"""
-def export_daily_log_file():
-    # containing students' full name, 9-digit UO ID, Email address, sign for positive or negative, sign for absent or not, days has isolated, date added for testing positive, and date added for absent.
-    f = open("Daily_log_file.txt", 'w+')
-    title = "Full_Name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing_positive   Date_added_for_absence \n"
-
-    f.write(title)
-    
-    with open('student_data.pickle', 'rb') as handle:
-        data = pickle.load(handle)
-        time = ""
-        print(data)
-        for each in data:
-            for info in data[each]:
-                print("info",info)
-                string = ''
-                if isinstance(info, list):
-                    time = str(info)
-                else:
-                    string += str(info)
-                    string += "\t"
-                f.write(string)
-    f.close()
+#"""
+#Function to generate a daily log file about the information of the students to the user. And it can be used for the user to reload to continuously modify this file.
+#"""
+#def export_daily_log_file():
+#   # containing students' full name, 9-digit UO ID, Email address, sign for positive or negative, sign for absent or not, days has isolated, date added for testing positive, and date added for absent.
+#   f = open("Daily_log_file.txt", 'w+')
+#   title = "Full_Name   UO_ID   Email   Positive/Negative   Absent/ot   Days_for_isolation   Date_added_for_testing_positive   Date_added_for_absence \n"
+#
+#   f.write(title)
+#   
+#   with open('student_data.pickle', 'rb') as handle:
+#       data = pickle.load(handle)
+#       time = ""
+#       print(data)
+#       for each in data:
+#           for info in data[each]:
+#               print("info",info)
+#               string = ''
+#               if isinstance(info, list):
+#                   time = str(info)
+#               else:
+#                   string += str(info)
+#                   string += "\t"
+#               f.write(string)
+#   f.close()
     
 
 """
@@ -277,7 +277,7 @@ def export_data():
 
 def main():
     input_data()
-    export_daily_log_file()
+#   export_daily_log_file()
     print(student_data)
 
 if __name__ == "__main__":

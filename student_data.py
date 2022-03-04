@@ -2,18 +2,19 @@
 File Name:      student_data.py
 Program Name:   COVID-Infection-Rate-Tracker
 Class:          CIS 422 - Winter22 - University of Oregon
-Date Created:   2/27/2022
-Authors:        Austin Mello
+Team members:   Austin Mello
                 Kai Xiong
                 Rebecca Hu
                 Xiang Hao
+Author:         Xiang Hao
+
+Date Created:   2/22/2022
+Lasted Modified: 3/4/2022
 
 Descriptions: 
 This file consists of student data management and input and export file logic.
 
 For input_data() function: it is used to ask for a txt file that contains students information.
-For student_search() function: it is used to match the student whose name is searched in the search bar of UI interface.
-For student_absent() function: it is used to record student who is absent in class.
 For get_data() function: it is used to extract dictionary from student data pickle file.
 For days_for_isolation() function: it is used to calculate how many days the student has isolated.
 For save_data() function: it is used to save dictionary to pickle file.
@@ -31,7 +32,6 @@ from tkinter import filedialog, messagebox
 import pickle
 from datetime import date
 from datetime import datetime
-from pathlib import Path
 
 
 # Global student data dictionary
@@ -52,7 +52,7 @@ def input_data(path = None):
         
         # If cancel button
         if not file: 
-            return
+            return False
         
 #       # Warning message for importing new data
 #       warning_message = "Do you want to import "
@@ -81,11 +81,15 @@ def input_data(path = None):
         # Populate dictionary with email as key
         for student in student_file:
             student = student.strip().split('\t')
-            student[3] = int(student[3])
-            student[4] = int(student[4])
-            student[5] = int(student[5])
-            student[7] = int(student[7])
-            student_data[student[0]] = student
+            if student.count('\t') != 7:
+                print("Error! Please check input file, the format is incorrect!")
+                return False
+            else:
+                student[3] = int(student[3])
+                student[4] = int(student[4])
+                student[5] = int(student[5])
+                student[7] = int(student[7])
+                student_data[student[0]] = student
             
         student_file.close()
         
@@ -98,92 +102,19 @@ def input_data(path = None):
         # Populate dictionary with email as key
         for student in student_file:
             student = student.strip().split('\t')
-            student[3] = int(student[3])
-            student[4] = int(student[4])
-            student[5] = int(student[5])
-            student[7] = int(student[7])
-            student_data[student[0]] = student
+            if student.count('\t') != 7:
+                print("Error! Please check input file, the format is incorrect!")
+                return False
+            else:
+                student[3] = int(student[3])
+                student[4] = int(student[4])
+                student[5] = int(student[5])
+                student[7] = int(student[7])
+                student_data[student[0]] = student
             
         student_file.close()
 
     save_data(student_data)
-        
-
-#"""
-#Function to match the student inputed in the search bar, where the parameters are email and status. Since email is unique, we use the email as the connected information.
-#This function is called from project2_interface.py.
-#
-#Parameters
-#_________
-#email: string
-#   String of unique student email
-#status: string
-#   String of type of status that was raised
-#   "positive" or "negative"
-#"""
-#def student_search(full_name, status):
-#   # Get student dictionary
-#   students = get_data()
-#   print(students)
-#
-#   # Find student data through email as key
-#   student = students[full_name]
-#
-#   # Change the status of (negative or positive) by adding "x" or not
-#   if status == "negative":
-#       student[3] = ""
-#   elif status == 'positive':
-#       student[3] = "x"
-#   else:
-#       print("Status type must be 'negative' or 'positive'")
-#       return
-#   
-#   # Track dates that student was called due to positive result in format MM/DD/YYY. Track days that student has isolated.
-#   if status == "positive":
-#       student[6].append(date.today().strftime("%m/%d/%Y"))
-#       student[5] += 1
-#
-#   print("student called", student)
-#
-#   # Save new data
-#   save_data(students)
-#
-#
-#"""
-#Function to mark student who is absent in class, where the parameters are email and absent. Since email is unique, we use the email as the connected information.
-#This function is called from project2_interface.py.
-#
-#Parameters
-#_________
-#email: string
-#   String of unique student email
-#absent: string
-#   String of type of absence
-#"""
-#def student_absent(full_name, absent):
-#   # Get student dictionary
-#   students = get_data()
-#   
-#   # Find student data through email as key
-#   student = students[full_name]
-#   
-#   # Add an "x" sign to the absent part if the student is absent, and the user does not know whether this student tests positive or negative.
-#   if absent == "absent" and student[4] == None and student[3] == None:
-#       student[4] = "x"
-#   elif absent == "absent" and student[4] != None and student[3] == None:
-#       student[4] = ""
-#   else:
-#       print("Absent type must be 'absent' or 'present'")
-#       return
-#   
-#   # Track dates that student was called due to absence in format MM/DD/YYY
-#   if absent == "absent" and student[4] == None and student[3] == None:
-#       student[6].append(date.today().strftime("%m/%d/%Y"))
-#
-#   print("student called", student)
-#   
-#   # Save new data
-#   save_data(students)
     
 
 """
@@ -219,18 +150,22 @@ def days_for_isolation():
     # Get today's date
     # code from: https://www.programiz.com/python-programming/datetime/current-datetime
     today = date.today().strftime("%m/%d/%Y")
-    today_list = today.split("/")
-    print(today_list)
-    date2 = date(int(today_list[2]), int(today_list[0]), int(today_list[1]))
+    today_date = today.split("/")
+    date2 = date(int(today_date[2]), int(today_date[0]), int(today_date[1]))
     
     # Loop through each student to track how many days they have isolated
     for key in students:
         if students[key][5] != 0:
-            added_list = students[key][6].split("/")
-            date1 = date(int(added_list[2]), int(added_list[0]), int(added_list[1]))
+            added_date = students[key][6].split("/")
+            date1 = date(int(added_date[2]), int(added_date[0]), int(added_date[1]))
             # Code from https://www.geeksforgeeks.org/python-program-to-find-number-of-days-between-two-given-dates/
             days = numOfDays(date1, date2)
             students[key][5] = str(days)
+            print("days", days)
+        if int(students[key][5]) >= 14:
+                students[key][3] = "0"
+                students[key][5] = "0"
+                students[key][6] = "0"
     
     # Save new data
     save_data(students)
@@ -258,8 +193,15 @@ Function to generate a daily log file about the information of the students to t
 def export_daily_log_file():
     # containing students' full name, 9-digit UO ID, Email address, sign for positive or negative, sign for absent or not, days has isolated, date added for testing positive, and date added for absent.
     date = str(datetime.now())
+    
+    path = "../COVID-Rate-Tracker/Log_Files"
+    
+    if not os.path.exists(path):
+        os.mkdir("../COVID-Rate-Tracker/Log_Files")
+            
     file = "../COVID-Rate-Tracker/Log_Files/Daily_log_file_" + date + ".txt"
     f = open(file, 'w+')
+    
     title = "Full_Name      Email      Positive   Absent   Days_for_isolation\n"
 
     f.write(title)
@@ -303,7 +245,6 @@ def export_data():
     with open('student_data.pickle', 'rb') as handle:
         data = pickle.load(handle)
         time = ""
-        print(data)
         for each in data:
             string = ''
             for info in data[each]:
@@ -313,10 +254,10 @@ def export_data():
             f.write(string)
     f.close()
 
-def main():
-    input_data("Student_Covid_Tracker.txt")
-#   export_daily_log_file()
-    print(student_data)
+#def main():
+#   input_data("Student_Covid_Tracker.txt")
+##   export_daily_log_file()
+#   print(student_data)
 
 if __name__ == "__main__":
     main()

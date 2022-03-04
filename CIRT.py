@@ -1,8 +1,8 @@
 from Interface import CISTInterface
 import student_data
-import os
 
 def main():
+	# loading data with dictionary
 	students = student_data.student_data
 	
 	# try to load the last execution saved file, if not exists, then set none.
@@ -16,11 +16,12 @@ def main():
 							
 	except IOError:
 		students = {}
-	
 		
 	main_UI = CISTInterface(database = students, stdLine = 20)
 	main_UI._turnOnGUI()
-	student_data.export_data()
+	
+	if student_data.student_data:
+		student_data.export_data()
 	
 if __name__ == "__main__":
 	main()

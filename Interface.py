@@ -38,11 +38,11 @@ class CISTInterface():
 		self._mainWindow.title("Covid Infection Rate Tracker")
 		
 		# loading the roster file
-		if database == {}:
+		if database:
+			self.database = database
+		else:
 			# when database is empty, give an example to execute UI
 			self.database = {"Empty": ['', '', '', 0, 0, 0, '[]   []']}
-		else:
-			self.database = database
 			
 		# create a list with student full names
 		self.namelist = []

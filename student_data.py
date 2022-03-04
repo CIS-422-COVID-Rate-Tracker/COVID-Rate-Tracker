@@ -82,7 +82,9 @@ def input_data(path = None):
         for student in student_file:
             tab_num = str(student)
             if tab_num.count('\t') != 7:
-                print("Error! Please check input file, the format is incorrect!")
+                warning_message_format = "Please check input file, the format is incorrect!"
+                # Input file format waring
+                format_warnning = messagebox.showerror(title="Error!", message=warning_message_format)
                 return False
             else:
                 student = student.strip().split('\t')
@@ -103,7 +105,9 @@ def input_data(path = None):
         # Populate dictionary with email as key
         for student in student_file:
             if str(student).count('\t') != 8:
-                print("Error! Please check input file, the format is incorrect!")
+                warning_message_format = "Please check input file, the format is incorrect!"
+                # Input file format waring
+                format_warnning = messagebox.showerror(title="Error!", message=warning_message_format)
                 return False
             student = student.strip().split('\t')
             student[3] = int(student[3])
@@ -161,7 +165,7 @@ def days_for_isolation():
             # Code from https://www.geeksforgeeks.org/python-program-to-find-number-of-days-between-two-given-dates/
             days = numOfDays(date1, date2)
             students[key][5] = str(days)
-            print("days", days)
+#           print("days", days)
         if int(students[key][5]) >= 14:
             students[key][3] = "0"
             students[key][5] = "0"
@@ -195,13 +199,18 @@ Function to generate a daily log file about the information of the students to t
 """
 def export_daily_log_file():
     # containing students' full name, 9-digit UO ID, Email address, sign for positive or negative, sign for absent or not, days has isolated, date added for testing positive, and date added for absent.
+    
+    # if database is empty, do nothing
+    if not student_data:
+        return
+    
     date = str(datetime.now())
     
     path = "../COVID-Rate-Tracker/Log_Files"
     
     if not os.path.exists(path):
         os.mkdir("../COVID-Rate-Tracker/Log_Files")
-        os.mkdir("Log_Files")
+#       os.mkdir("Log_Files")
     
     file = "../COVID-Rate-Tracker/Log_Files/Daily_log_file_" + date + ".txt"
     f = open(file, 'w+')

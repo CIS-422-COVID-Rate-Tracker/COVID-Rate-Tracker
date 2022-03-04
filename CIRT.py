@@ -1,4 +1,23 @@
-from Interface import CISTInterface
+'''
+File Name:      	CIRT.py
+Program Name:   	COVID-Infection-Rate-Tracker
+Class:         		CIS 422 - Winter22 - University of Oregon
+Group memebers: 	Austin Mello
+					Kai Xiong
+					Rebecca Hu
+					Xiang Hao
+
+Created Date: 		3/1/2022
+Last Update Date: 	3/4/2022
+
+Author: 			Kai Xiong
+					Xiang Hao
+
+Required library: 	Interface.py
+					student_data.py
+'''
+
+from Interface import CIRTInterface
 import student_data
 
 def main():
@@ -16,10 +35,13 @@ def main():
 							
 	except IOError:
 		students = {}
-		
+	
+	# turn on the GUI Module
 	main_UI = CISTInterface(database = students, stdLine = 20)
 	main_UI._turnOnGUI()
 	
+	# generate Saved/boot file.
+	# if database is empty, pass export action
 	if student_data.student_data:
 		student_data.export_data()
 	

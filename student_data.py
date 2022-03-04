@@ -10,7 +10,7 @@ Team members:   Austin Mello
 Author:         Xiang Hao
 
 Date Created:   2/22/2022
-Lasted Modified: 3/4/2022
+Latest Modified: 3/4/2022
 
 Descriptions: 
 This file consists of student data management and input and export file logic.
@@ -269,11 +269,3 @@ def export_data():
             string += "\n"
             f.write(string)
     f.close()
-
-#def main():
-#   input_data("Student_Covid_Tracker.txt")
-##   export_daily_log_file()
-#   print(student_data)
-
-#if __name__ == "__main__":
-#   main()

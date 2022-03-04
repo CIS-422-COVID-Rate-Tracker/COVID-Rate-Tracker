@@ -29,7 +29,7 @@ from search_box import SearchBox
 from tkinter import filedialog
 from tkinter import messagebox
 
-class CISTInterface():
+class CIRTInterface():
 	def __init__(self, database = {}, stdLine = 20):
 		# main GUI window
 		self._mainWindow = tk.Tk()

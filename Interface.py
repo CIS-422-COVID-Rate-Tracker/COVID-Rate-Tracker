@@ -1,15 +1,25 @@
 '''
-Graphic User Interface
-Project 2
-Created Date: 2/22/2022
-Last Update Date: 2/28/2022
-Author: Kai Xiong，Rebecca Hu
+File Name:      	Interface.py
+Program Name:   	COVID-Infection-Rate-Tracker
+Class:         		CIS 422 - Winter22 - University of Oregon
+Group memebers: 	Austin Mello
+					Kai Xiong
+					Rebecca Hu
+					Xiang Hao
 
-Required library: Tkinter, SearchBox
-# How to install Tkinter: sudo apt-get install python3.7-tk
+Created Date: 		2/22/2022
+Last Update Date: 	3/4/2022
+Author: 			Kai Xiong
+					Rebecca Hu
 
-SearchBox credit: cite the components to build the search box part:
-		https://github.com/arcticfox1919/tkinter-tabview
+Required library: 	Tkinter
+					SearchBox
+
+How to install Tkinter: sudo apt-get install python3.10-tk
+
+Cite Search Box class to help us to build searching function
+SearchBox credit: 	cite the components to build the search box part:
+					https://github.com/arcticfox1919/tkinter-tabview
 '''
 import tkinter as tk
 import student_data
@@ -20,7 +30,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 
 class CISTInterface():
-	def __init__(self, database = None, stdLine = 20):
+	def __init__(self, database = {}, stdLine = 20):
 		# main GUI window
 		self._mainWindow = tk.Tk()
 		
@@ -28,7 +38,7 @@ class CISTInterface():
 		self._mainWindow.title("Covid Infection Rate Tracker")
 		
 		# loading the roster file
-		if database == None:
+		if database == {}:
 			# when database is empty, give an example to execute UI
 			self.database = {"Empty": ['', '', '', 0, 0, 0, '[]   []']}
 		else:
@@ -316,17 +326,15 @@ class CISTInterface():
 	Then renew the current database (in UI).
 	"""
 	def getInputFile(self):
-#		rosterFile = filedialog.askopenfile(initialdir = "", title = "Please chose your roster file")
 		## here we should call file I/O function and get new database
-		student_data.input_data()
-		
-		self.database = student_data.student_data
-		self.namelist = []
-		for i in self.database.keys():
-			self.namelist.append(i)
-		self.totalnum = len(self.database)
-		self.renewCurrentPercentage()
-		self._updatePercentage()
+		if student_data.input_data() != False:
+			self.database = student_data.student_data
+			self.namelist = []
+			for i in self.database.keys():
+				self.namelist.append(i)
+			self.totalnum = len(self.database)
+			self.renewCurrentPercentage()
+			self._updatePercentage()
 		
 	
 	"""
@@ -337,7 +345,7 @@ class CISTInterface():
 		## here we need to send a signal to let File I/O prints LOG File with current database
 
 		student_data.export_daily_log_file()
-		print("LOG file generated")
+#		print("LOG file generated")
 		
 
 ################################################################################
@@ -355,9 +363,4 @@ class CISTInterface():
 	"""
 	def _closeOffGUI(self):
 		self._mainWindow.destroy()
-
-# Testing
-if __name__ == "__main__":
-	main_window = CISTInterface()
-	main_window._turnOnGUI()
-	
+		

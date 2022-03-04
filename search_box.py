@@ -1,14 +1,22 @@
 """
-Graphic User Interface
-Project 2
-Created Date: 2/25/2022
-modifier: Kai Xiong, Rebecca Hu
+File Name:      	search_box.py
+Program Name:   	COVID-Infection-Rate-Tracker
+Class:         		CIS 422 - Winter22 - University of Oregon
+Group memebers: 	Austin Mello
+                    Kai Xiong
+                    Rebecca Hu
+                    Xiang Hao
 
-Required library: Tkinter
-# How to install Tkinter: sudo apt-get install python3.7-tk
+Created Date:       2/25/2022
+modifier:           Kai Xiong
+                    Rebecca Hu
+
+Required library:   Tkinter
+
+How to install Tkinter: sudo apt-get install python3.10-tk
 
 credit: cite the components to build the search box part:
-        https://github.com/arcticfox1919/tkinter-tabview
+                    https://github.com/arcticfox1919/tkinter-tabview
 
 Used By:
     interface.py
@@ -96,7 +104,6 @@ class SearchBox(Entry):
         widget = event.widget
         self.currentItem = widget.get(widget.curselection())
         self.stringVariable.set(self.currentItem)
-        print("string", self.currentItem)
         self._hide()
 
     """

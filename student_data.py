@@ -80,11 +80,12 @@ def input_data(path = None):
         
         # Populate dictionary with email as key
         for student in student_file:
-            student = student.strip().split('\t')
-            if student.count('\t') != 7:
+            tab_num = str(student)
+            if tab_num.count('\t') != 7:
                 print("Error! Please check input file, the format is incorrect!")
                 return False
             else:
+                student = student.strip().split('\t')
                 student[3] = int(student[3])
                 student[4] = int(student[4])
                 student[5] = int(student[5])
@@ -101,16 +102,15 @@ def input_data(path = None):
 
         # Populate dictionary with email as key
         for student in student_file:
-            student = student.strip().split('\t')
-            if student.count('\t') != 7:
+            if str(student).count('\t') != 8:
                 print("Error! Please check input file, the format is incorrect!")
                 return False
-            else:
-                student[3] = int(student[3])
-                student[4] = int(student[4])
-                student[5] = int(student[5])
-                student[7] = int(student[7])
-                student_data[student[0]] = student
+            student = student.strip().split('\t')
+            student[3] = int(student[3])
+            student[4] = int(student[4])
+            student[5] = int(student[5])
+            student[7] = int(student[7])
+            student_data[student[0]] = student
             
         student_file.close()
 
@@ -161,18 +161,14 @@ def days_for_isolation():
             # Code from https://www.geeksforgeeks.org/python-program-to-find-number-of-days-between-two-given-dates/
             days = numOfDays(date1, date2)
             students[key][5] = str(days)
-<<<<<<< HEAD
             print("days", days)
-        if int(students[key][5]) >= 14:
-                students[key][3] = "0"
-                students[key][5] = "0"
-                students[key][6] = "0"
-=======
         if int(students[key][5]) >= 14:
             students[key][3] = "0"
             students[key][5] = "0"
             students[key][6] = "0"
->>>>>>> 12d01fe71df06b3b23b3fc3c59cc234196d7ea23
+            student_data[key][3] = 0
+            student_data[key][5] = 0
+            student_data[key][6] = "0"
     
     # Save new data
     save_data(students)
@@ -204,13 +200,9 @@ def export_daily_log_file():
     path = "../COVID-Rate-Tracker/Log_Files"
     
     if not os.path.exists(path):
-<<<<<<< HEAD
         os.mkdir("../COVID-Rate-Tracker/Log_Files")
-            
-=======
         os.mkdir("Log_Files")
     
->>>>>>> 12d01fe71df06b3b23b3fc3c59cc234196d7ea23
     file = "../COVID-Rate-Tracker/Log_Files/Daily_log_file_" + date + ".txt"
     f = open(file, 'w+')
     
@@ -271,5 +263,5 @@ def export_data():
 ##   export_daily_log_file()
 #   print(student_data)
 
-if __name__ == "__main__":
-    main()
+#if __name__ == "__main__":
+#   main()

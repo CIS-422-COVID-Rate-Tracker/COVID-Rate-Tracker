@@ -1,10 +1,15 @@
 from Interface import CISTInterface
 import student_data
-
+import os
 
 def main():
 	students = student_data.student_data
 	
+#	if not os.path.exists('../COVID-Rate-Tracker/student_data.pickle'):
+#		fp = open('student_data.pickle', 'w+')
+#		fp.close()
+	
+
 	# try to load the last execution saved file, if not exists, then set none.
 	try:
 		with open('Student_Covid_Tracker.txt'):
@@ -13,7 +18,6 @@ def main():
 			for i in students.keys():
 				students[i][4] = 0
 			student_data.days_for_isolation()
-			
 				
 	except IOError:
 		students = None
@@ -26,3 +30,4 @@ def main():
 	
 if __name__ == "__main__":
 	main()
+	

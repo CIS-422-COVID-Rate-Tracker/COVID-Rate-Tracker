@@ -161,11 +161,18 @@ def days_for_isolation():
             # Code from https://www.geeksforgeeks.org/python-program-to-find-number-of-days-between-two-given-dates/
             days = numOfDays(date1, date2)
             students[key][5] = str(days)
+<<<<<<< HEAD
             print("days", days)
         if int(students[key][5]) >= 14:
                 students[key][3] = "0"
                 students[key][5] = "0"
                 students[key][6] = "0"
+=======
+        if int(students[key][5]) >= 14:
+            students[key][3] = "0"
+            students[key][5] = "0"
+            students[key][6] = "0"
+>>>>>>> 12d01fe71df06b3b23b3fc3c59cc234196d7ea23
     
     # Save new data
     save_data(students)
@@ -197,8 +204,13 @@ def export_daily_log_file():
     path = "../COVID-Rate-Tracker/Log_Files"
     
     if not os.path.exists(path):
+<<<<<<< HEAD
         os.mkdir("../COVID-Rate-Tracker/Log_Files")
             
+=======
+        os.mkdir("Log_Files")
+    
+>>>>>>> 12d01fe71df06b3b23b3fc3c59cc234196d7ea23
     file = "../COVID-Rate-Tracker/Log_Files/Daily_log_file_" + date + ".txt"
     f = open(file, 'w+')
     

@@ -6,6 +6,7 @@ Team members:   Austin Mello
                 Kai Xiong
                 Rebecca Hu
                 Xiang Hao
+
 Author:         Xiang Hao
 
 Date Created:   2/22/2022
@@ -16,6 +17,7 @@ This file consists of student data management and input and export file logic.
 
 For input_data() function: it is used to ask for a txt file that contains students information.
 For get_data() function: it is used to extract dictionary from student data pickle file.
+For numOfDays() function: it is used to get the difference between two days.
 For days_for_isolation() function: it is used to calculate how many days the student has isolated.
 For save_data() function: it is used to save dictionary to pickle file.
 For export_daily_log_file() function: it is used to export the daily log file.
@@ -126,13 +128,13 @@ Function to extract student dictionary from pickle file
 """
 def get_data():
     # If there is no student data
-    if os.path.getsize('student_data.pickle') == 0:
+    if os.path.getsize('.student_data.pickle') == 0:
         return False
     else:
         # Code from:
         # https://stackoverflow.com/questions/11218477/how-can-i-use-pickle-to-save-a-dict
         # Read from pickle file
-        with open('student_data.pickle', 'rb') as handle:
+        with open('.student_data.pickle', 'rb') as handle:
             data = pickle.load(handle)
         return data
 
@@ -154,6 +156,7 @@ def days_for_isolation():
     # Get today's date
     # code from: https://www.programiz.com/python-programming/datetime/current-datetime
     today = date.today().strftime("%m/%d/%Y")
+    
     today_date = today.split("/")
     date2 = date(int(today_date[2]), int(today_date[0]), int(today_date[1]))
     
@@ -190,7 +193,7 @@ def save_data(student_data):
     # Code from
     # https://stackoverflow.com/questions/11218477/how-can-i-use-pickle-to-save-a-dict
     # Save to pickle file
-    with open('student_data.pickle', 'wb') as handle:
+    with open('.student_data.pickle', 'wb') as handle:
         pickle.dump(student_data, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
@@ -219,7 +222,7 @@ def export_daily_log_file():
 
     f.write(title)
     
-    with open('student_data.pickle', 'rb') as handle:
+    with open('.student_data.pickle', 'rb') as handle:
         data = pickle.load(handle)
         
         for each in data:
@@ -255,7 +258,7 @@ def export_data():
 
     f.write(title)
     
-    with open('student_data.pickle', 'rb') as handle:
+    with open('.student_data.pickle', 'rb') as handle:
         data = pickle.load(handle)
         time = ""
         for each in data:

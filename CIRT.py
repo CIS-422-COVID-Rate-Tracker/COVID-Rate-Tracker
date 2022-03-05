@@ -37,11 +37,11 @@ def main():
 		students = {}
 	
 	# turn on the GUI Module
-	main_UI = CISTInterface(database = students, stdLine = 20)
+	main_UI = CIRTInterface(database = students, stdLine = 20)
 	main_UI._turnOnGUI()
 	
 	# generate Saved/boot file.
-	# if database is empty, pass export action
+	# if database is empty, ignore export action
 	if student_data.student_data:
 		student_data.export_data()
 	

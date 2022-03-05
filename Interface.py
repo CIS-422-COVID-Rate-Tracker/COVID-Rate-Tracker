@@ -167,6 +167,8 @@ class CIRTInterface():
 				self.negativeButton.destroy()
 			if self.absent == 1:
 				self.absentButton.destroy()
+			self.searchPreviousName = None
+			self.searchCurrentName = None
 		if not text:
 			self.search.update(None)
 			return
@@ -264,6 +266,7 @@ class CIRTInterface():
 	def clean_command(self):
 		self.search.delete(0, END)
 		self.searchCurrentName = None
+		self.searchPreviousName = None
 
 ################################################################################
 # ------Positive & Negative Buttons---------------------------------------------

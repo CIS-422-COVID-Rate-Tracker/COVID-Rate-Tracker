@@ -13,6 +13,8 @@ Last Update Date: 	3/4/2022
 Author: 			Kai Xiong
 					Xiang Hao
 
+Modified: Rebecca Hu
+
 Required library: 	Interface.py
 					student_data.py
 '''
@@ -37,7 +39,7 @@ def main():
 		students = {}
 	
 	# turn on the GUI Module
-	main_UI = CISTInterface(database = students, stdLine = 20)
+	main_UI = CIRTInterface(database = students, stdLine = 20)
 	main_UI._turnOnGUI()
 	
 	# generate Saved/boot file.

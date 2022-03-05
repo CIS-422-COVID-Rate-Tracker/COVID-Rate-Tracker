@@ -38,8 +38,8 @@ Create a roster file includes student infomation.
 ## Dependencies
 The COVID Rate Tracker relies on:
 1. [python3.X](https://www.python.org/downloads/) 
-2. [tkinter] (https://docs.python.org/3/library/tkinter.html)
-3. [pickle] (https://docs.python.org/3/library/pickle.html)
+2. [tkinter](https://docs.python.org/3/library/tkinter.html)
+3. [pickle](https://docs.python.org/3/library/pickle.html)
 
 ## File Manifest
 *Software Files*

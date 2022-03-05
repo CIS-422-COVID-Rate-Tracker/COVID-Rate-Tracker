@@ -13,6 +13,8 @@ Last Update Date: 	3/4/2022
 Author: 			Kai Xiong
 					Xiang Hao
 
+Modified: Rebecca Hu
+
 Required library: 	Interface.py
 					student_data.py
 '''

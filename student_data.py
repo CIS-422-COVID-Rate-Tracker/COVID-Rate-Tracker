@@ -169,7 +169,7 @@ def days_for_isolation():
             days = numOfDays(date1, date2)
             students[key][5] = str(days)
 #           print("days", days)
-        if int(students[key][5]) >= 14:
+        if int(students[key][5]) >= 10:
             students[key][3] = "0"
             students[key][5] = "0"
             students[key][6] = "0"

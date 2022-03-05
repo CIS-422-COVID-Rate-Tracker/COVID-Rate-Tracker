@@ -57,6 +57,12 @@ TO-DO
 
 ## Credits
 1. **"Software Engineering 10th Edition" Ian Sommerville:** UML reference and general Software methods.
-2. **`requirments from interviews`** TO-DO
-3. **Search_Box module** cited from github: `https://github.com/arcticfox1919/tkinter-tabview`
-4. **`Other cites in student_data.py`** TO-DO
+2. **`requirments from interviews`**
+ - One of the interviewee wanted this system can delete the student who tested positive after 14 days. And we searched online and modified this number to 10 days since we follow the instruction from the CDC: https://www.cdc.gov/coronavirus/2019-ncov/your-health/quarantine-isolation.html
+  - One of the interviewee wanted us to give the access of this system to students, however, after we talked about this to another interviewee, he concerned about the privacy of students if giving the access to the students. Therefore, we set the database to the host desktop not a cloud database.
+4. **Search_Box module** cited from github: `https://github.com/arcticfox1919/tkinter-tabview`
+5. **`Other cites in student_data.py`**:
+ https://www.geeksforgeeks.org/python-program-to-find-number-of-days-between-two-given-dates/
+	https://stackoverflow.com/questions/11218477/how-can-i-use-pickle-to-save-a-dict
+	https://www.programiz.com/python-programming/datetime/current-datetime
+

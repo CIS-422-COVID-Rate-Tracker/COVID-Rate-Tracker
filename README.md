@@ -63,8 +63,6 @@ TO-DO
 4. **Search_Box module** cited from github: `https://github.com/arcticfox1919/tkinter-tabview`
 5. **`Other cites in student_data.py`**:
  https://www.geeksforgeeks.org/python-program-to-find-number-of-days-between-two-given-dates/
- 
  https://stackoverflow.com/questions/11218477/how-can-i-use-pickle-to-save-a-dict
- 
  https://www.programiz.com/python-programming/datetime/current-datetime
 

@@ -66,3 +66,5 @@ TO-DO
  - https://stackoverflow.com/questions/11218477/how-can-i-use-pickle-to-save-a-dict
  - https://www.programiz.com/python-programming/datetime/current-datetime
 
+## Notes
+1: Make sure that the program directory you download names COVID-Rate-Tracker. If the name of the program directory is not COVID-Rate-Tracker please change the name to COVID-Rate-Tracker.

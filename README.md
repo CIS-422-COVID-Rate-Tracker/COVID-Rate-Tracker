@@ -53,7 +53,9 @@ The COVID Rate Tracker relies on:
 2. test.txt
 
 ## Known Bugs and Fixes
-TO-DO
+1. Clean Button: If a user searches for a student, then searches for another student, then presses the clean button to remove the student status menu from the Main Window, the Postive, Negative, and Absent buttons will remain.  Under normal operations, the Clean button should remove these buttons as well.  The buttons no longer seem to have any function, however.  They just stay there until a new name is searched.
+2. Window Size Matters: If the user changes the size of the window, some elements of the GUI will automatically re-orient themselves with the new window size, while some elements will not.
+3. Usability concerns: The font color of the student name is hard to read against the background for colorblind individuals.
 
 ## Credits
 1. **"Software Engineering 10th Edition" Ian Sommerville:** UML reference and general Software methods.

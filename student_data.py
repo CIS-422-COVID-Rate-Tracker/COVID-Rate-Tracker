@@ -56,10 +56,10 @@ def input_data(path = None):
         if not file: 
             return False
         
-#       # Warning message for importing new data
-#       warning_message = "Do you want to import "
-#       warning_message += str(file)
-#       warning_message += "?"
+        # Warning message for importing new data
+        warning_message = "Do you want to import "
+        warning_message += str(file)
+        warning_message += "?"
         
         # Check if student data exists
         if get_data():
@@ -79,6 +79,12 @@ def input_data(path = None):
         student_file = open(file, "r")
         # File headers
         headers = student_file.readline().strip().split('\t')
+        
+        if headers != "Full_Name   UO_ID   Email   Positive/Negative   Absent/Not   Days_for_isolation   Date_added_for_testing_positive   Times_for_absence \n":
+                warning_message_format = "Please check input file, the format is incorrect!"
+                # Input file format waring
+                format_warnning = messagebox.showerror(title="Error!", message=warning_message_format)
+                return False
         
         # Populate dictionary with email as key
         for student in student_file:
@@ -169,7 +175,7 @@ def days_for_isolation():
             days = numOfDays(date1, date2)
             students[key][5] = str(days)
 #           print("days", days)
-        if int(students[key][5]) >= 10:
+        if int(students[key][5]) >= 14:
             students[key][3] = "0"
             students[key][5] = "0"
             students[key][6] = "0"
@@ -269,3 +275,4 @@ def export_data():
             string += "\n"
             f.write(string)
     f.close()
+    

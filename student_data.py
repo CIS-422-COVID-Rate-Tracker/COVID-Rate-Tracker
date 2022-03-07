@@ -61,6 +61,16 @@ def input_data(path = None):
         warning_message += str(file)
         warning_message += "?"
         
+        student_file = open(file, "r")
+        # File headers
+        headers = student_file.readline().strip().split('\t')
+        
+        if headers != ['Full_Name   UO_ID   Email   Positive/Negative Absent/Not   Days_for_isolation   Date_added_for_testing_positive   Times_for_Absence']:
+                warning_message_format = "Please check input file, the format is incorrect!"
+                # Input file format waring
+                format_warnning = messagebox.showerror(title="Error!", message=warning_message_format)
+                return False
+        
         # Check if student data exists
         if get_data():
             warning_message = "The following student data will be overridden. Do you want to continue?\n\n"
@@ -75,16 +85,6 @@ def input_data(path = None):
             title="Warning", 
             message=warning_message,
             default=messagebox.YES)
-        
-        student_file = open(file, "r")
-        # File headers
-        headers = student_file.readline().strip().split('\t')
-        
-        if headers != "Full_Name   UO_ID   Email   Positive/Negative   Absent/Not   Days_for_isolation   Date_added_for_testing_positive   Times_for_absence \n":
-                warning_message_format = "Please check input file, the format is incorrect!"
-                # Input file format waring
-                format_warnning = messagebox.showerror(title="Error!", message=warning_message_format)
-                return False
         
         # Populate dictionary with email as key
         for student in student_file:

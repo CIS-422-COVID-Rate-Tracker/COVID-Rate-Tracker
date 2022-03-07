@@ -307,7 +307,8 @@ class CIRTInterface():
 		self._updateColorButton(self.searchCurrentName)
 		self.renewCurrentPercentage()
 		self._updatePercentage()
-		self.database[self.searchCurrentName][6] = "0/0/0"
+		self.database[self.searchCurrentName][6] = "1970/01/01"
+		self.database[self.searchCurrentName][5] = 0
 		student_data.save_data(self.database)
 	
 	"""
